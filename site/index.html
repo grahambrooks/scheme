@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="apelliconApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Apellicon API Portal</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="js/angular.js"></script>
+</head>
+<body class="bg-light">
+<div class="container" ng-controller="SearchController">
+    <div class="py-5 text-center">
+        <h2>Apellicon API Portal</h2>
+        <p class="lead">API Registration and Searching made easy.</p>
+    </div>
+    <div class="card-deck mb-12 text-center">
+        <div class="card mb-12 box-shadow">
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">Upload</h1>
+                <pre>curl -X POST -H "Content-Type: application/json" -d @openapi-examples/v2.0/json/uber.json http://localhost:8000/api/interfaces</pre>
+            </div>
+        </div>
+    </div>
+    <div class="card-deck mb-12 text-center">
+        <div class="card mb-12 box-shadow">
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">Searching</h1>
+                <pre>curl http://localhost:8000/api/interfaces</pre>
+            </div>
+        </div>
+    </div>
+    <form>
+        <div class="form-group">
+            <label for="search-box">Search</label>
+            <input id="search-box" type="text" class="form-control" ng-model="searchText" ng-change="updateResults()">
+        </div>
+    </form>
+    <p>{{searchResponse.hits.total.value}}</p>
+    <div ng-repeat="h in searchResponse.hits.hits">
+        <div class="float-right">
+            <small>{{h._source.host}}{{h._source.basePath}} </small><img src="images/openapi.png" height="20"><small>{{h._source.swagger}}</small>
+        </div>
+        <h3>{{h._source.info.title}} <small>v {{h._source.info.version}}</small></h3>
+        <p>{{h._source.info.description}}</p>
+    </div>
+</div>
+
+<script src="js/jquery-3.5.0.min.js"></script>
+<script src="js/bootstrap.bundle.min.js" type="application/javascript"></script>
+<script src="js/appelicon.js"></script>
+</body>
+</html>
