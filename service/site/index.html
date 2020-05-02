@@ -10,13 +10,13 @@
 <div class="container" ng-controller="SearchController">
     <div class="py-5 text-center">
         <h2>Apellicon API Portal</h2>
-        <p class="lead">API Registration and Searching made easy.</p>
+        <p class="lead">API Registration and Discovery made easy.</p>
     </div>
     <div class="card-deck mb-12 text-center">
         <div class="card mb-12 box-shadow">
             <div class="card-body">
                 <h1 class="card-title pricing-card-title">Upload</h1>
-                <pre>curl -X POST -H "Content-Type: application/json" -d @openapi-examples/v2.0/json/uber.json http://localhost:8000/api/interfaces</pre>
+                <pre>curl -X POST -H "Content-Type: application/openapi+json" -d @openapi-examples/v2.0/json/uber.json http://localhost:8000/api/interfaces</pre>
             </div>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <div class="card mb-12 box-shadow">
             <div class="card-body">
                 <h1 class="card-title pricing-card-title">Searching</h1>
-                <pre>curl http://localhost:8000/api/interfaces</pre>
+                <pre>curl http://localhost:8000/api/search?query=</pre>
             </div>
         </div>
     </div>
@@ -37,10 +37,10 @@
     <p>{{searchResponse.hits.total.value}}</p>
     <div ng-repeat="h in searchResponse.hits.hits">
         <div class="float-right">
-            <small>{{h._source.host}}{{h._source.basePath}} </small><img src="images/openapi.png" height="20"><small>{{h._source.swagger}}</small>
+            <small>{{h._source.host}}{{h._source.basePath}} </small><img src="images/openapi.png" height="20"><small>{{h._source.kind}} {{h._id}}</small>
         </div>
-        <h3>{{h._source.info.title}} <small>v {{h._source.info.version}}</small></h3>
-        <p>{{h._source.info.description}}</p>
+        <h3>{{h._source.title}} <small>v {{h._source.version}}</small></h3>
+        <p>{{h._source.description}}</p>
     </div>
 </div>
 

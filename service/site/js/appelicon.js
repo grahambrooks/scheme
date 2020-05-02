@@ -4,7 +4,7 @@ angular.module('apelliconApp', [])
         $scope.searchResponse = "waiting";
 
         $scope.updateResults = function () {
-            var query = '/api/interfaces?query=' + $scope.searchText;
+            var query = '/api/search?query=' + $scope.searchText;
             console.log("Search text is now " + query);
 
             $http({

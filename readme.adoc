@@ -1,0 +1,32 @@
+= Apellicon
+
+Apellicon is named after a famous greek book collector from 1st Century BC.
+
+Apellicon is an API registry and search engine. It provides a basic search UI for API discovery and an api for uploading API specifications.
+
+* OpenAPI 2/3 JSON and YAML formats
+* WADL XML interface definitions
+
+== In a hurry
+
+If you have docker installed just run:
+
+    docker build --tag apellicon -f docker/Dockerfile .
+
+    docker-compose docker/docker-componse start
+
+This will build apillicon:latest, download an elastic search container and if everything works as planned you can open the app in your browser:
+
+    http://localhost:8000
+
+== Adding data
+
+    sh scripts/upload.sh
+
+....
+
+include::scripts/upload.sh[]
+
+....
+
+Uploads some example API specs.

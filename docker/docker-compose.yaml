@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+  apellicon:
+    image: apellicon:latest
+    ports:
+      - 8000:8000
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    environment:
+      discovery.type: single-node
+    ports:
+      - 9200:9200
