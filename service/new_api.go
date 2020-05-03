@@ -11,11 +11,12 @@ import (
 	"github.com/elastic/go-elasticsearch/esapi"
 	"github.com/gorilla/mux"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-func NewInterfaceHandler(writer http.ResponseWriter, request *http.Request) {
+func NewApiHandler(writer http.ResponseWriter, request *http.Request) {
 	contentType := request.Header.Get("Content-Type")
 
 	vars := mux.Vars(request)
@@ -23,8 +24,10 @@ func NewInterfaceHandler(writer http.ResponseWriter, request *http.Request) {
 	if len(id) == 0 {
 		errorResponse(writer, "Invalid document id (empty)")
 	} else {
-		model, err := interfaceModel(contentType, request.Body)
+		document, err := ioutil.ReadAll(request.Body)
 		defer request.Body.Close()
+		WriteApiEntry(id, string(document))
+		model, err := interfaceModel(contentType, ioutil.NopCloser(bytes.NewReader(document)))
 		if err != nil {
 			errorResponse(writer, fmt.Sprintf("error parsing request %v", err))
 		} else {
@@ -37,14 +40,13 @@ func NewInterfaceHandler(writer http.ResponseWriter, request *http.Request) {
 
 				es, err := elasticsearch.NewDefaultClient()
 				req := esapi.IndexRequest{
-					Index:      "interfaces",
+					Index:      SearchIndexName,
 					DocumentID: id,
 					Body:       bytes.NewReader(buffer.Bytes()),
 					Refresh:    "true",
 					ErrorTrace: true,
 				}
 
-				// Perform the request with the client.
 				res, err := req.Do(context.Background(), es)
 				mirrorResponse(res, err, writer)
 			}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Apellicon User Guide</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Apellicon</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="user-guide.html">User Guide</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="py-5 text-center">
+        <h2>Apellicon API Portal</h2>
+        <p class="lead">API Registration and Discovery made easy.</p>
+    </div>
+    <div class="card-deck mb-12 text-center">
+        <div class="card mb-12 box-shadow">
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">Upload</h1>
+                <pre>curl -X POST -H "Content-Type: application/openapi+json" --data-binary @path/to/api/spec http://localhost:8000/api/apis/:id</pre>
+                <div class="text-left">
+                    <h3>Supported content types:</h3>
+                    <dl class="row">
+                        <dt class="col-sm-3">application/openapi+json</dt>
+                        <dd class="col-sm-9">Supports Swagger and OpenAPI schemas version 2 and 3</dd>
+                        <dt class="col-sm-3 text-truncate">application/openapi+yaml</dt>
+                        <dd class="col-sm-9">Supports the same versions as JSON conent</dd>
+                        <dt class="col-sm-3">application/wadl+xml</dt>
+                        <dd class="col-sm-9">Basic <a href="https://www.w3.org/Submission/wadl/">WADL</a> support </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-deck mb-12 text-center">
+        <div class="card mb-12 box-shadow">
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">Searching</h1>
+                <pre>curl http://localhost:8000/api/search?query=</pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery-3.5.0.min.js"></script>
+<script src="js/bootstrap.bundle.min.js" type="application/javascript"></script>
+</body>
+</html>

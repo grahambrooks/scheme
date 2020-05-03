@@ -2,16 +2,17 @@ angular.module('apelliconApp', [])
     .controller('SearchController', ['$scope', '$http', function ($scope, $http) {
         $scope.searchText = "";
         $scope.searchResponse = "waiting";
+        $scope.resultCount = 0
 
         $scope.updateResults = function () {
             var query = '/api/search?query=' + $scope.searchText;
-            console.log("Search text is now " + query);
 
             $http({
                 method: 'GET',
                 url: query
             }).then(function successCallback(response) {
                 $scope.searchResponse = response.data;
+                $scope.resultCount = $scope.searchResponse.hits.total.value
             }, function errorCallback(response) {
                 console.log("error from API " + response)
                 // called asynchronously if an error occurs
@@ -19,5 +20,5 @@ angular.module('apelliconApp', [])
             });
         };
 
-        console.log("Apellicon App Controller Loaded");
+        $scope.updateResults()
     }]);

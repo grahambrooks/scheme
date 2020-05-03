@@ -10,6 +10,11 @@ import (
 	"time"
 )
 
+const (
+	SearchIndexName = "apellicon-search"
+	DocumentIndexName = "apellicon-docs"
+)
+
 func main() {
 	r := mux.NewRouter()
 	r.Use(loggingMiddleware)
@@ -17,9 +22,10 @@ func main() {
 
 	api.HandleFunc("/", HomeHandler)
 	api.HandleFunc("/stats", ServiceStats)
-	api.HandleFunc("/search", SearchHandler).Methods(http.MethodGet)
-	api.HandleFunc("/interfaces", ListInterfaces).Methods(http.MethodGet)
-	api.HandleFunc("/interfaces/{id}", NewInterfaceHandler).Methods(http.MethodPost)
+	api.HandleFunc("/search", SearchApiHandler).Methods(http.MethodGet)
+	api.HandleFunc("/apis", ListApisHandler).Methods(http.MethodGet)
+	api.HandleFunc("/apis/{id}", NewApiHandler).Methods(http.MethodPost)
+	api.HandleFunc("/apis/{id}", GetApiHandler).Methods(http.MethodGet)
 	//http.Handle("/", r)
 
 	contentPath := "site"

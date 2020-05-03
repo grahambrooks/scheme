@@ -7,37 +7,38 @@
     <script src="js/angular.js"></script>
 </head>
 <body class="bg-light">
+
 <div class="container" ng-controller="SearchController">
-    <div class="py-5 text-center">
-        <h2>Apellicon API Portal</h2>
-        <p class="lead">API Registration and Discovery made easy.</p>
-    </div>
-    <div class="card-deck mb-12 text-center">
-        <div class="card mb-12 box-shadow">
-            <div class="card-body">
-                <h1 class="card-title pricing-card-title">Upload</h1>
-                <pre>curl -X POST -H "Content-Type: application/openapi+json" -d @openapi-examples/v2.0/json/uber.json http://localhost:8000/api/interfaces</pre>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Apellicon</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="user-guide.html">User Guide</a>
+                </li>
+            </ul>
         </div>
-    </div>
-    <div class="card-deck mb-12 text-center">
-        <div class="card mb-12 box-shadow">
-            <div class="card-body">
-                <h1 class="card-title pricing-card-title">Searching</h1>
-                <pre>curl http://localhost:8000/api/search?query=</pre>
-            </div>
-        </div>
-    </div>
+        <span class="navbar-text">API Search</span>
+    </nav>
+
     <form>
         <div class="form-group">
-            <label for="search-box">Search</label>
+            <label for="search-box">Search APIs</label>
             <input id="search-box" type="text" class="form-control" ng-model="searchText" ng-change="updateResults()">
         </div>
     </form>
-    <p>{{searchResponse.hits.total.value}}</p>
+    <p>Matching APIs {{resultCount}}</p>
     <div ng-repeat="h in searchResponse.hits.hits">
         <div class="float-right">
-            <small>{{h._source.host}}{{h._source.basePath}} </small><img src="images/openapi.png" height="20"><small>{{h._source.kind}} {{h._id}}</small>
+            <small>{{h._source.host}}{{h._source.basePath}} </small><img src="images/openapi.png" height="20"><small>{{h._source.kind}} <a href="/view.html?id={{h._id}}">{{h._id}}</a></small>
         </div>
         <h3>{{h._source.title}} <small>v {{h._source.version}}</small></h3>
         <p>{{h._source.description}}</p>
