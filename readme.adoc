@@ -13,7 +13,7 @@ If you have docker installed just run:
 
     docker build --tag apellicon -f docker/Dockerfile .
 
-    docker-compose docker/docker-componse start
+    docker-compose docker/docker-componse up
 
 This will build apillicon:latest, download an elastic search container and if everything works as planned you can open the app in your browser:
 
@@ -30,3 +30,24 @@ include::scripts/upload.sh[]
 ....
 
 Uploads some example API specs.
+
+== Development
+
+Running all tests:
+
+    bazel test //...
+
+Building and Running
+
+    bazel run //service/apellicon
+
+You will need a running elastic search instance
+
+    ./scripts/es-start.sh
+
+    docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+
+If you have a local elastic search instance running set
+
+    ENV ELASTICSEARCH_URL=http://<host>:<port>
+
