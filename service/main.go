@@ -7,9 +7,9 @@ import (
 	"github.com/elastic/go-elasticsearch"
 	"github.com/elastic/go-elasticsearch/esapi"
 	"github.com/gorilla/mux"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"html/template"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -83,6 +83,7 @@ func (v ApiView) decodeApiSpec(spec string) (interface{}, error) {
 }
 
 func main() {
+	log.SetFormatter(&log.JSONFormatter{})
 	r := mux.NewRouter()
 	r.Use(loggingMiddleware)
 	api := r.PathPrefix("/api").Subrouter()

@@ -31,8 +31,8 @@ gazelle_dependencies()
 go_repository(
     name = "com_github_davecgh_go_spew",
     importpath = "github.com/davecgh/go-spew",
-    sum = "h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=",
-    version = "v1.1.0",
+    sum = "h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=",
+    version = "v1.1.1",
 )
 
 go_repository(
@@ -117,4 +117,25 @@ go_repository(
     importpath = "golang.org/x/xerrors",
     sum = "h1:E7g+9GITq07hpfrRu66IVDexMakfv52eLZ2CXBWiKr4=",
     version = "v0.0.0-20191204190536-9bdfabe68543",
+)
+
+go_repository(
+    name = "com_github_konsorten_go_windows_terminal_sequences",
+    importpath = "github.com/konsorten/go-windows-terminal-sequences",
+    sum = "h1:CE8S1cTafDpPvMhIxNJKvHsGVBgn1xWYf1NbHQhywc8=",
+    version = "v1.0.3",
+)
+
+go_repository(
+    name = "com_github_sirupsen_logrus",
+    importpath = "github.com/sirupsen/logrus",
+    sum = "h1:UBcNElsrwanuuMsnGSlYmtmgbb23qDR5dG+6X6Oo89I=",
+    version = "v1.6.0",
+)
+
+go_repository(
+    name = "org_golang_x_sys",
+    importpath = "golang.org/x/sys",
+    sum = "h1:Cz4ceDQGXuKRnVBDTS23GTn/pU5OE2C0WrNTOYK1Uuc=",
+    version = "v0.0.0-20190422165155-953cdadca894",
 )
