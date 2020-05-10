@@ -1,0 +1,129 @@
+{{define "view"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Apellicon [{{.Api.info.title}}]</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h1>{{.Api.info.title}} <small>{{.Api.info.version}}</small></h1></div>
+        <div class="panel-body"><p>{{.Api.info.description}}</p></div>
+    </div>
+
+    <h2>Paths</h2>
+
+
+{{range $k, $v := .Api.paths}}
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3>{{$k}}</h3></div>
+        <div class="panel-body">
+            <dl class="row">
+            {{range $m, $v := $v}}
+                <dt class="col-sm-3">Summary</dt>
+                <dd class="col-sm-9">{{$v.summary}}</dd>
+                <dt class="col-sm-3">Description</dt>
+                <dd class="col-sm-9">{{$v.description}}</dd>
+                <dt class="col-sm-3">Tags</dt>
+                <dd class="col-sm-9">
+                    <ul class="list-inline">
+                    {{range $t := $v.tags}}
+                        <li class="list-inline-item">{{.}} <i class="fa fa-tag" aria-hidden="true"></i></li>
+                    {{end}}
+                    </ul>
+                </dd>
+                <dt class="col-sm-3">Parameters</dt>
+                <dd class="col-sm-9">
+                    {{range $p := $v.parameters}}
+                        {{template "parameter" .}}
+                    {{end}}
+                </dd>
+                <dt class="col-sm-3">Responses</dt>
+                <dd class="col-sm-9">
+                    {{range $k, $v := $v.responses}}
+                    <dl class="row">
+                        <dt class="col-sm-3 text-truncate">{{$k}}</dt>
+                        <dd class="col-sm-9">{{template "response" $v}}</dd>
+                    </dl>
+                    {{end}}
+                </dd>
+            {{end}}
+            </dl>
+        </div>
+    </div>
+{{end}}
+
+<h2>Definitions</h2>
+
+{{range $k, $v := .Api.definitions}}
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3>{{$k}}</h3></div>
+        <div class="panel-body">
+            <dl class="row">
+            {{range $k, $p := $v}}
+                <dt class="col-sm-3">{{$k}}</dt>
+                <dd class="col-sm-9">{{template "property" $p}}</dd>
+            {{end}}
+            </dl>
+        </div>
+    </div>
+
+{{end}}
+
+</div>
+<script src="/js/jquery-3.5.0.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js" type="application/javascript"></script>
+</body>
+</html>
+{{end}}
+
+{{define "parameter"}}
+    <dl class="row">
+        <dt class="col-sm-3 text-truncate">Name</dt>
+        <dd class="col-sm-9">{{.name}}</dd>
+
+        <dt class="col-sm-3 text-truncate">In</dt>
+        <dd class="col-sm-9">{{.in}}</dd>
+
+        <dt class="col-sm-3 text-truncate">Description</dt>
+        <dd class="col-sm-9">{{.description}}</dd>
+
+        <dt class="col-sm-3 text-truncate">Required</dt>
+        <dd class="col-sm-9">{{.required}}</dd>
+
+        <dt class="col-sm-3 text-truncate">Type</dt>
+        <dd class="col-sm-9">{{.type}}</dd>
+
+        <dt class="col-sm-3 text-truncate">Format</dt>
+        <dd class="col-sm-9">{{.format}}</dd>
+    </dl>
+{{end}}
+
+{{define "response"}}
+    <dl class="row">
+        <dt class="col-sm-3 text-truncate">Description</dt>
+        <dd class="col-sm-9">{{.description}}</dd>
+        {{if .schema}}
+        <dt class="col-sm-3 text-truncate">Schema-ref</dt>
+        <dd class="col-sm-9">{{index .schema "$ref"}}</dd>
+        {{end}}
+    </dl>
+{{end}}
+
+{{define "property"}}
+    {{range $k, $v := .}}
+        <dl class="row">
+            <dt class="col-sm-3 text-truncate">{{$k}}</dt>
+            <dd class="col-sm-9">
+                <dl class="row">
+                    <dt class="col-sm-3 text-truncate">{{$v.type}} {{$v.format}}</dt>
+                    <dd class="col-sm-9">{{$v.description}} {{if $v.items}}ref {{index $v.items "$ref"}}{{end}}</dd>
+                </dl>
+            </dd>
+        </dl>
+    {{end}}
+{{end}}
