@@ -39,15 +39,17 @@ Running all tests:
 
 Building and Running
 
-    bazel run //service/apellicon
+    bazel run //service:apellicon
 
 You will need a running elastic search instance
 
-    ./scripts/es-start.sh
+    sh ./scripts/es-start.sh
+
+or
 
     docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.6.2
 
-If you have a local elastic search instance running set
+If you have a local elastic search instance running  the ELASTICSEARCH_URL environment variable overrides the default localhost setting in the apellicon service.
 
-    ENV ELASTICSEARCH_URL=http://<host>:<port>
+    EXPORT ELASTICSEARCH_URL=http://<host>:<port>
 
