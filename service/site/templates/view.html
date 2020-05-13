@@ -1,84 +1,141 @@
 {{define "view"}}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Apellicon [{{.Api.info.title}}]</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/font-awesome.min.css">
-</head>
-<body>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Apellicon [{{.Api.info.title}}]</title>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+    </head>
+    <body>
 
-<div class="container">
-    <div class="panel panel-default">
-        <div class="panel-heading"><h1>{{.Api.info.title}} <small>{{.Api.info.version}}</small></h1></div>
-        <div class="panel-body"><p>{{.Api.info.description}}</p></div>
-    </div>
-
-    <h2>Paths</h2>
-
-
-{{range $k, $v := .Api.paths}}
-    <div class="panel panel-default">
-        <div class="panel-heading"><h3>{{$k}}</h3></div>
-        <div class="panel-body">
-            <dl class="row">
-            {{range $m, $v := $v}}
-                <dt class="col-sm-3">Summary</dt>
-                <dd class="col-sm-9">{{$v.summary}}</dd>
-                <dt class="col-sm-3">Description</dt>
-                <dd class="col-sm-9">{{$v.description}}</dd>
-                <dt class="col-sm-3">Tags</dt>
-                <dd class="col-sm-9">
-                    <ul class="list-inline">
-                    {{range $t := $v.tags}}
-                        <li class="list-inline-item">{{.}} <i class="fa fa-tag" aria-hidden="true"></i></li>
-                    {{end}}
-                    </ul>
-                </dd>
-                <dt class="col-sm-3">Parameters</dt>
-                <dd class="col-sm-9">
-                    {{range $p := $v.parameters}}
-                        {{template "parameter" .}}
-                    {{end}}
-                </dd>
-                <dt class="col-sm-3">Responses</dt>
-                <dd class="col-sm-9">
-                    {{range $k, $v := $v.responses}}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h1>{{.Api.info.title}} <small>{{.Api.info.version}}</small></h1></div>
+            <div class="panel-body"><p>{{.Api.info.description}}</p>
+                {{if .Api.info.contact}}
+                    <h3>Contact</h3>
                     <dl class="row">
-                        <dt class="col-sm-3 text-truncate">{{$k}}</dt>
-                        <dd class="col-sm-9">{{template "response" $v}}</dd>
+                        <dt class="col-sm-3">name</dt>
+                        <dd class="col-sm-9">{{.Api.info.contact.name}}</dd>
+                        <dt class="col-sm-3">url</dt>
+                        <dd class="col-sm-9">{{.Api.info.contact.url}}</dd>
+                        <dt class="col-sm-3">email</dt>
+                        <dd class="col-sm-9">{{.Api.info.contact.email}}</dd>
                     </dl>
-                    {{end}}
-                </dd>
-            {{end}}
-            </dl>
+                {{end}}
+                {{if .Api.tags}}
+                    <h3>Tags</h3>
+                    <dl class="row">
+                        {{range $k, $v := .Api.tags}}
+                            <dt class="col-sm-3">{{$v.name}}</dt>
+                            <dd class="col-sm-9">{{$v.description}}</dd>
+                        {{end}}
+                    </dl>
+                {{end}}
+            </div>
         </div>
-    </div>
-{{end}}
 
-<h2>Definitions</h2>
+        <h2>Paths</h2>
 
-{{range $k, $v := .Api.definitions}}
-    <div class="panel panel-default">
-        <div class="panel-heading"><h3>{{$k}}</h3></div>
-        <div class="panel-body">
-            <dl class="row">
-            {{range $k, $p := $v}}
-                <dt class="col-sm-3">{{$k}}</dt>
-                <dd class="col-sm-9">{{template "property" $p}}</dd>
+        {{range $k, $v := .Api.paths}}
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>{{$k}}</h3></div>
+                <div class="panel-body">
+                    <dl class="row">
+                        {{range $m, $v := $v}}
+                            <dt class="col-sm-3">Summary</dt>
+                            <dd class="col-sm-9">{{$v.summary}}</dd>
+                            <dt class="col-sm-3">Description</dt>
+                            <dd class="col-sm-9">{{$v.description}}</dd>
+                            <dt class="col-sm-3">Tags</dt>
+                            <dd class="col-sm-9">
+                                <ul class="list-inline">
+                                    {{range $t := $v.tags}}
+                                        <li class="list-inline-item">{{.}} <i class="fa fa-tag" aria-hidden="true"></i>
+                                        </li>
+                                    {{end}}
+                                </ul>
+                            </dd>
+                            <dt class="col-sm-3">Parameters</dt>
+                            <dd class="col-sm-9">
+                                {{range $p := $v.parameters}}
+                                    {{template "parameter" .}}
+                                {{end}}
+                            </dd>
+                            <dt class="col-sm-3">Responses</dt>
+                            <dd class="col-sm-9">
+                                {{range $k, $v := $v.responses}}
+                                    <dl class="row">
+                                        <dt class="col-sm-3 text-truncate">{{$k}}</dt>
+                                        <dd class="col-sm-9">{{template "response" $v}}</dd>
+                                    </dl>
+                                {{end}}
+                            </dd>
+                        {{end}}
+                    </dl>
+                </div>
+            </div>
+        {{end}}
+
+        {{if .Api.definitions}}
+            <h2>Definitions</h2>
+
+            {{range $k, $v := .Api.definitions}}
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3>{{$k}}</h3></div>
+                    <div class="panel-body">
+                        <dl class="row">
+                            {{range $k, $p := $v}}
+                                <dt class="col-sm-3">{{$k}}</dt>
+                                <dd class="col-sm-9">{{template "property" $p}}</dd>
+                            {{end}}
+                        </dl>
+                    </div>
+                </div>
             {{end}}
-            </dl>
-        </div>
+        {{end}}
+
+        {{if .Api.components}}
+            <h2>Schemas</h2>
+
+            {{range $k, $v := .Api.components.schemas}}
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3>{{$k}} {{$v.type}}</h3></div>
+                    <div class="panel-body">
+                        <dl class="row">
+                            {{range $k, $p := $v.properties}}
+                                <dt class="col-sm-3">{{$k}}</dt>
+                                <dd class="col-sm-9">{{$p.type}}
+                                    {{if $p.items}}
+                                        <dl class="row">
+                                            <dd class="col-sm-3">{{$p.items.type}}</dd>
+                                            <dd class="col-sm-9">
+                                                <dl class="row">
+                                                    {{range $k, $v := $p.items.properties}}
+                                                        <dd class="col-sm-3">{{$k}}</dd>
+                                                        <dd class="col-sm-1">{{$v.type}}</dd>
+                                                        <dd class="col-sm-1">{{$v.format}}</dd>
+                                                        <dd class="col-sm-7">{{$v.description}}</dd>
+                                                    {{end}}
+                                                </dl>
+                                            </dd>
+
+                                        </dl>
+                                    {{end}}
+                                </dd>
+                            {{end}}
+                        </dl>
+                    </div>
+                </div>
+            {{end}}
+        {{end}}
+
     </div>
-
-{{end}}
-
-</div>
-<script src="/js/jquery-3.5.0.min.js"></script>
-<script src="/js/bootstrap.bundle.min.js" type="application/javascript"></script>
-</body>
-</html>
+    <script src="/js/jquery-3.5.0.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js" type="application/javascript"></script>
+    </body>
+    </html>
 {{end}}
 
 {{define "parameter"}}
@@ -108,8 +165,8 @@
         <dt class="col-sm-3 text-truncate">Description</dt>
         <dd class="col-sm-9">{{.description}}</dd>
         {{if .schema}}
-        <dt class="col-sm-3 text-truncate">Schema-ref</dt>
-        <dd class="col-sm-9">{{index .schema "$ref"}}</dd>
+            <dt class="col-sm-3 text-truncate">Schema-ref</dt>
+            <dd class="col-sm-9">{{index .schema "$ref"}}</dd>
         {{end}}
     </dl>
 {{end}}
