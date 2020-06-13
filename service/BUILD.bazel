@@ -13,7 +13,9 @@ go_library(
             "service_stats.go",
             "search.go",
             "doc_service.go",
-            "get_api.go"],
+            "get_api.go",
+            "api_view.go",
+            "error_response.go"],
     importpath = "apellicon/service",
     visibility = ["//visibility:private"],
     deps = [
