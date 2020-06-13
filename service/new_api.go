@@ -16,7 +16,7 @@ import (
 	"net/http"
 )
 
-func NewApiHandler(writer http.ResponseWriter, request *http.Request) {
+func (s *ApelliconServer) NewApiHandler(writer http.ResponseWriter, request *http.Request) {
 	contentType := request.Header.Get("Content-Type")
 
 	vars := mux.Vars(request)
@@ -26,6 +26,7 @@ func NewApiHandler(writer http.ResponseWriter, request *http.Request) {
 	} else {
 		document, err := ioutil.ReadAll(request.Body)
 		defer request.Body.Close()
+		s.ApiStore.Save(id, string(document))
 		WriteApiEntry(id, string(document))
 		model, err := interfaceModel(contentType, ioutil.NopCloser(bytes.NewReader(document)))
 		if err != nil {

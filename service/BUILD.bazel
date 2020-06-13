@@ -8,6 +8,7 @@ go_library(
     name = "go_default_library",
     srcs = ["main.go",
             "server.go",
+            "api_store.go",
             "home.go",
             "new_api.go",
             "list_apis.go",

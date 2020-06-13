@@ -38,7 +38,7 @@
     <p>Matching APIs {{resultCount}}</p>
     <div ng-repeat="h in searchResponse.hits.hits">
         <div class="float-right">
-            <small>{{h._source.host}}{{h._source.basePath}} </small><img src="images/openapi.png" height="20"><small>{{h._source.kind}} <a href="/view.html?id={{h._id}}">{{h._id}}</a></small>
+            <small>{{h._source.host}}{{h._source.basePath}} </small><img src="images/openapi.png" height="20"><small>{{h._source.kind}}&nbsp;<a href="/view.html?id={{h._id}}">{{h._id}}</a>&nbsp;<a href="/view/{{h._id}}">View</a></small>
         </div>
         <h3>{{h._source.title}} <small>v {{h._source.version}}</small></h3>
         <p>{{h._source.description}}</p>

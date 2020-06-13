@@ -1,37 +1,22 @@
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"github.com/elastic/go-elasticsearch"
-	"github.com/elastic/go-elasticsearch/esapi"
+	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
-type ElasticGetResponse struct {
-	Id     string `json:"_id"`
-	Source struct {
-		Content string `json:"Content"`
-	} `json:"_source"`
-}
-
-func GetApiHandler(writer http.ResponseWriter, request *http.Request) {
+func (s *ApelliconServer) GetApiHandler(writer http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 	id := vars["id"]
 	if len(id) == 0 {
-		errorResponse(writer, "Invalid document id (empty)")
+		errorResponse(writer, "Invalid document id (missing)")
 	} else {
-		es, _ := elasticsearch.NewDefaultClient()
-		req := esapi.GetRequest{
-			Index:      DocumentIndexName,
-			DocumentID: id,
-		}
-		res, _ := req.Do(context.Background(), es)
+		elasticResponse, err := s.ApiStore.Get(id)
 
-		decoder := json.NewDecoder(res.Body)
-		var elasticResponse ElasticGetResponse
-		_ = decoder.Decode(&elasticResponse)
+		if err != nil {
+			errorResponse(writer, fmt.Sprintf("Error reading API specification %v", err))
+		}
 
 		_, _ = writer.Write([]byte(elasticResponse.Source.Content))
 	}

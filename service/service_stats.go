@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func ServiceStats(writer http.ResponseWriter, request *http.Request) {
+func (s *ApelliconServer) ServiceStats(writer http.ResponseWriter, request *http.Request) {
 	es, err := elasticsearch.NewDefaultClient()
 
 	req := esapi.CountRequest{Index: []string{"interfaces"}}
@@ -16,4 +16,3 @@ func ServiceStats(writer http.ResponseWriter, request *http.Request) {
 
 	mirrorResponse(res, err, writer)
 }
-

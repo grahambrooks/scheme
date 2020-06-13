@@ -1,11 +1,8 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/elastic/go-elasticsearch"
-	"github.com/elastic/go-elasticsearch/esapi"
 	"github.com/gorilla/mux"
 	"gopkg.in/yaml.v2"
 	"html/template"
@@ -16,34 +13,20 @@ import (
 )
 
 type ApiView struct {
-	Path  string
-	Id    string
-	Title string
-	Api   interface{}
-}
-
-func (v ApiView) readApiSpec(id string) string {
-	es, _ := elasticsearch.NewDefaultClient()
-	req := esapi.GetRequest{
-		Index:      DocumentIndexName,
-		DocumentID: id,
-	}
-	res, _ := req.Do(context.Background(), es)
-
-	decoder := json.NewDecoder(res.Body)
-	var elasticResponse ElasticGetResponse
-	_ = decoder.Decode(&elasticResponse)
-
-	return elasticResponse.Source.Content
+	Path     string
+	Id       string
+	Title    string
+	Api      interface{}
+	ApiStore *ApiStore
 }
 
 func (v ApiView) ViewHandler(writer http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 	id := vars["id"]
 
-	spec := v.readApiSpec(id)
+	res, err := v.ApiStore.Get(id)
 
-	api, err := v.decodeApiSpec(spec)
+	api, err := v.decodeApiSpec(res.Source.Content)
 
 	templateFilePath := filepath.Join(v.Path, "templates", "view.html")
 	t, err := template.New("view").ParseFiles(templateFilePath)

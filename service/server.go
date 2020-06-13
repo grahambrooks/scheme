@@ -12,32 +12,28 @@ import (
 )
 
 type ApelliconServer struct {
-	Port int
+	Port     int
+	ApiStore *ApiStore
 }
 
-func (s ApelliconServer) ListenAndServe() {
+func (s *ApelliconServer) ListenAndServe() {
 	log.SetFormatter(&log.JSONFormatter{})
 	r := mux.NewRouter()
 	r.Use(loggingMiddleware)
 	api := r.PathPrefix("/api").Subrouter()
 
-	api.HandleFunc("/", HomeHandler)
-	api.HandleFunc("/stats", ServiceStats)
-	api.HandleFunc("/search", SearchApiHandler).Methods(http.MethodGet)
-	api.HandleFunc("/apis", ListApisHandler).Methods(http.MethodGet)
-	api.HandleFunc("/apis/{id}", NewApiHandler).Methods(http.MethodPost)
-	api.HandleFunc("/apis/{id}", GetApiHandler).Methods(http.MethodGet)
+	api.HandleFunc("/", s.HomeHandler)
+	api.HandleFunc("/stats", s.ServiceStats)
+	api.HandleFunc("/search", s.SearchApiHandler).Methods(http.MethodGet)
+	api.HandleFunc("/apis", s.ListApisHandler).Methods(http.MethodGet)
+	api.HandleFunc("/apis/{id}", s.NewApiHandler).Methods(http.MethodPost)
+	api.HandleFunc("/apis/{id}", s.GetApiHandler).Methods(http.MethodGet)
 
-	contentPath := "site"
-	_, err := os.Stat(contentPath)
-	if err != nil {
-		contentPath = "service/site"
-	}
-	view := ApiView{Path: contentPath}
+	view := ApiView{Path: s.ContentPath(), ApiStore: s.ApiStore}
 
 	r.Path("/view/{id}").HandlerFunc(view.ViewHandler).Methods(http.MethodGet)
-	log.Printf("Serving static content from %s", contentPath)
-	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir(contentPath))))
+	log.Printf("Serving static content from %s", s.ContentPath())
+	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir(s.ContentPath()))))
 
 	srv := &http.Server{
 		Handler:      r,
@@ -46,16 +42,22 @@ func (s ApelliconServer) ListenAndServe() {
 		ReadTimeout:  15 * time.Second,
 	}
 	log.Printf("Service running on port 8000")
-
 	log.Fatal(srv.ListenAndServe())
 
 }
 
+func (s *ApelliconServer) ContentPath() string {
+	contentPath := "site"
+	_, err := os.Stat(contentPath)
+	if err != nil {
+		contentPath = "service/site"
+	}
+	return contentPath
+}
+
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Do stuff here
 		log.Println(r.RequestURI)
-		// Call the next handler, which can be another middleware in the chain, or the final handler.
 		next.ServeHTTP(w, r)
 	})
 }
