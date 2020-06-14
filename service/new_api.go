@@ -22,8 +22,8 @@ func (s *ApelliconServer) NewApiHandler(writer http.ResponseWriter, request *htt
 		errorResponse(writer, "Invalid document id (empty)")
 	} else {
 		document, err := ioutil.ReadAll(request.Body)
-		defer request.Body.Close()
-		s.ApiStore.Save(id, string(document))
+		defer func() { _ = request.Body.Close() }()
+		_, err = s.ApiStore.Save(id, string(document))
 
 		model, err := parseContent(contentType, ioutil.NopCloser(bytes.NewReader(document)))
 		if err != nil {
@@ -54,8 +54,9 @@ func parseContent(contentType string, spec io.ReadCloser) (search.Model, error) 
 	case "application/wadl+xml":
 		parser := wadl.Parser{}
 		return parser.Parse(spec)
+	case "":
+		return search.Model{}, fmt.Errorf("missing Content-Type. Supported content types application/openapi+json, applicatiion/openapi+yaml or application/wadl+xml")
 	default:
-		return search.Model{}, fmt.Errorf("content type '%s' not suported. Supported content types application/openapi+json, applicatiion/openapi+yaml or application/wadl+xml", contentType)
+		return search.Model{}, fmt.Errorf("content type '%s' not supported. Supported content types application/openapi+json, applicatiion/openapi+yaml or application/wadl+xml", contentType)
 	}
-
 }
