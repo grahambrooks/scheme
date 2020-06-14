@@ -33,11 +33,15 @@ Uploads some example API specs.
 
 == Development
 
-Running all tests:
+Managing and updating dependencies::
+
+     bazel run //:gazelle -- update-repos -from_file=go.mod
+
+Running all tests::
 
     bazel test //...
 
-Building and Running
+Building and Running::
 
     bazel run //service:apellicon
 

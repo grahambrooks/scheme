@@ -25,7 +25,7 @@ func (s *ApelliconServer) NewApiHandler(writer http.ResponseWriter, request *htt
 		defer request.Body.Close()
 		s.ApiStore.Save(id, string(document))
 
-		model, err := interfaceModel(contentType, ioutil.NopCloser(bytes.NewReader(document)))
+		model, err := parseContent(contentType, ioutil.NopCloser(bytes.NewReader(document)))
 		if err != nil {
 			errorResponse(writer, fmt.Sprintf("error parsing request %v", err))
 		} else {
@@ -43,7 +43,7 @@ func (s *ApelliconServer) NewApiHandler(writer http.ResponseWriter, request *htt
 	}
 }
 
-func interfaceModel(contentType string, spec io.ReadCloser) (search.Model, error) {
+func parseContent(contentType string, spec io.ReadCloser) (search.Model, error) {
 	switch contentType {
 	case "application/openapi+json":
 		parser := openapi.Parser{}
