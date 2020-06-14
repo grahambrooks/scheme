@@ -10,8 +10,7 @@ type ErrorMessage struct {
 }
 
 func errorResponse(writer http.ResponseWriter, s string) {
+	writer.WriteHeader(http.StatusBadRequest)
 	encoder := json.NewEncoder(writer)
 	_ = encoder.Encode(ErrorMessage{Message: s})
-	writer.WriteHeader(http.StatusBadRequest)
-
 }

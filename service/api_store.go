@@ -15,11 +15,11 @@ const (
 	DocumentIndexName = "apellicon-docs"
 )
 
-type ApiStore struct {
+type ElasticApiStore struct {
 }
 
-func NewApiStore() *ApiStore {
-	return &ApiStore{}
+func NewApiStore() *ElasticApiStore {
+	return &ElasticApiStore{}
 }
 
 type ElasticGetResponse struct {
@@ -29,7 +29,7 @@ type ElasticGetResponse struct {
 	} `json:"_source"`
 }
 
-func (store *ApiStore) Get(id string) (ElasticGetResponse, error) {
+func (store *ElasticApiStore) Get(id string) (ElasticGetResponse, error) {
 	es, _ := elasticsearch.NewDefaultClient()
 	req := esapi.GetRequest{
 		Index:      DocumentIndexName,
@@ -44,7 +44,7 @@ func (store *ApiStore) Get(id string) (ElasticGetResponse, error) {
 	return elasticResponse, err
 }
 
-func (store *ApiStore) TextSearch(filter string) (*esapi.Response, error) {
+func (store *ElasticApiStore) TextSearch(filter string) (*esapi.Response, error) {
 	query := fmt.Sprintf(`{
   "query": {
     "query_string": {
@@ -63,7 +63,7 @@ func (store *ApiStore) TextSearch(filter string) (*esapi.Response, error) {
 	return req.Do(context.Background(), es)
 }
 
-func (store *ApiStore) List() (*esapi.Response, error) {
+func (store *ElasticApiStore) List() (*esapi.Response, error) {
 	es, err := elasticsearch.NewDefaultClient()
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (store *ApiStore) List() (*esapi.Response, error) {
 	return req.Do(context.Background(), es)
 }
 
-func (store *ApiStore) Save(id string, content string) (*esapi.Response, error) {
+func (store *ElasticApiStore) Save(id string, content string) (*esapi.Response, error) {
 
 	entry := ApiDocumentEntry{
 		Content: content,
@@ -91,6 +91,22 @@ func (store *ApiStore) Save(id string, content string) (*esapi.Response, error) 
 		Index:      DocumentIndexName,
 		DocumentID: id,
 		Body:       bytes.NewReader(buffer.Bytes()),
+		Refresh:    "true",
+		ErrorTrace: true,
+	}
+
+	return req.Do(context.Background(), es)
+}
+
+func (store*ElasticApiStore) IndexDocument(id string, content []byte) (*esapi.Response, error) {
+	es, err := elasticsearch.NewDefaultClient()
+	if err != nil {
+		return nil, err
+	}
+	req := esapi.IndexRequest{
+		Index:      SearchIndexName,
+		DocumentID: id,
+		Body:       bytes.NewReader(content),
 		Refresh:    "true",
 		ErrorTrace: true,
 	}

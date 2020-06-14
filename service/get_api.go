@@ -15,9 +15,9 @@ func (s *ApelliconServer) GetApiHandler(writer http.ResponseWriter, request *htt
 		elasticResponse, err := s.ApiStore.Get(id)
 
 		if err != nil {
-			errorResponse(writer, fmt.Sprintf("Error reading API specification %v", err))
+			errorResponse(writer, fmt.Sprintf("Error reading API specification: %v", err))
+		} else {
+			_, _ = writer.Write([]byte(elasticResponse.Source.Content))
 		}
-
-		_, _ = writer.Write([]byte(elasticResponse.Source.Content))
 	}
 }

@@ -17,7 +17,7 @@ type ApiView struct {
 	Id       string
 	Title    string
 	Api      interface{}
-	ApiStore *ApiStore
+	ApiStore ApiStore
 }
 
 func (v ApiView) ViewHandler(writer http.ResponseWriter, request *http.Request) {

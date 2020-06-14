@@ -1,15 +1,12 @@
 package main
 
 import (
-	"apellicon/openapi"
-	"apellicon/search"
-	"apellicon/wadl"
 	"bytes"
-	"context"
 	"fmt"
-	"github.com/elastic/go-elasticsearch"
-	"github.com/elastic/go-elasticsearch/esapi"
 	"github.com/gorilla/mux"
+	"github.com/grahambrooks/apellicon/openapi"
+	"github.com/grahambrooks/apellicon/search"
+	"github.com/grahambrooks/apellicon/wadl"
 	"io"
 	"io/ioutil"
 	"log"
@@ -27,7 +24,7 @@ func (s *ApelliconServer) NewApiHandler(writer http.ResponseWriter, request *htt
 		document, err := ioutil.ReadAll(request.Body)
 		defer request.Body.Close()
 		s.ApiStore.Save(id, string(document))
-		WriteApiEntry(id, string(document))
+
 		model, err := interfaceModel(contentType, ioutil.NopCloser(bytes.NewReader(document)))
 		if err != nil {
 			errorResponse(writer, fmt.Sprintf("error parsing request %v", err))
@@ -39,16 +36,7 @@ func (s *ApelliconServer) NewApiHandler(writer http.ResponseWriter, request *htt
 			} else {
 				log.Printf("Search Model %s", buffer.String())
 
-				es, err := elasticsearch.NewDefaultClient()
-				req := esapi.IndexRequest{
-					Index:      SearchIndexName,
-					DocumentID: id,
-					Body:       bytes.NewReader(buffer.Bytes()),
-					Refresh:    "true",
-					ErrorTrace: true,
-				}
-
-				res, err := req.Do(context.Background(), es)
+				res, err := s.ApiStore.IndexDocument(id, buffer.Bytes())
 				mirrorResponse(res, err, writer)
 			}
 		}
@@ -67,7 +55,7 @@ func interfaceModel(contentType string, spec io.ReadCloser) (search.Model, error
 		parser := wadl.Parser{}
 		return parser.Parse(spec)
 	default:
-		return search.Model{}, fmt.Errorf("Content type '%s' not suported. Supported content types application/openapi2+json, applicatiion/openapi2+json", contentType)
+		return search.Model{}, fmt.Errorf("content type '%s' not suported. Supported content types application/openapi+json, applicatiion/openapi+yaml or application/wadl+xml", contentType)
 	}
 
 }

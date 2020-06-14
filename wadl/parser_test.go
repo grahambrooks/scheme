@@ -1,7 +1,7 @@
 package wadl
 
 import (
-	"apellicon/search"
+	"github.com/grahambrooks/apellicon/search"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"

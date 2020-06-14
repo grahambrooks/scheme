@@ -1,10 +1,10 @@
 package openapi
 
 import (
-	"apellicon/search"
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/grahambrooks/apellicon/search"
 	"gopkg.in/yaml.v2"
 	"io"
 	"io/ioutil"
@@ -97,11 +97,15 @@ func (parser *Parser) ParseYaml(reader io.Reader) (search.Model, error) {
 }
 
 func parseResources(spec map[string]interface{}) []search.Resource {
-	paths := spec["paths"].(map[string]interface{})
-
 	var resources []search.Resource
-	for key, _ := range paths {
-		resources = append(resources, search.Resource{Path: key})
+
+	if spec["paths"] != nil {
+		paths := spec["paths"].(map[string]interface{})
+
+		for key, _ := range paths {
+			resources = append(resources, search.Resource{Path: key})
+		}
 	}
+
 	return resources
 }

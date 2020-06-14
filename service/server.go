@@ -13,7 +13,7 @@ import (
 
 type ApelliconServer struct {
 	Port     int
-	ApiStore *ApiStore
+	ApiStore ApiStore
 }
 
 func (s *ApelliconServer) ListenAndServe() {
@@ -28,6 +28,8 @@ func (s *ApelliconServer) ListenAndServe() {
 	api.HandleFunc("/apis", s.ListApisHandler).Methods(http.MethodGet)
 	api.HandleFunc("/apis/{id}", s.NewApiHandler).Methods(http.MethodPost)
 	api.HandleFunc("/apis/{id}", s.GetApiHandler).Methods(http.MethodGet)
+	api.HandleFunc("/apis/{id}/updates", s.GetApiHandler).Methods(http.MethodPost)
+	api.HandleFunc("/registrations", s.NewRegistration).Methods(http.MethodPost)
 
 	view := ApiView{Path: s.ContentPath(), ApiStore: s.ApiStore}
 

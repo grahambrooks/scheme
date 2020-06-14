@@ -1,8 +1,8 @@
 package wadl
 
 import (
-	"apellicon/search"
 	"encoding/xml"
+	"github.com/grahambrooks/apellicon/search"
 	"io"
 	"io/ioutil"
 	"path"

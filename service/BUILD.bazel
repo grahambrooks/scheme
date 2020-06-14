@@ -1,7 +1,7 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_test", "go_library")
 load("@bazel_gazelle//:def.bzl", "gazelle")
 
-# gazelle:prefix apellicon/service
+# gazelle:prefix github.com/grahambrooks/apellicon/service
 gazelle(name = "gazelle")
 
 go_library(
@@ -16,9 +16,11 @@ go_library(
             "search.go",
             "doc_service.go",
             "get_api.go",
+            "registrations.go",
             "api_view.go",
-            "error_response.go"],
-    importpath = "apellicon/service",
+            "error_response.go",
+            "api.go"],
+    importpath = "github.com/grahambrooks/apellicon/service",
     visibility = ["//visibility:private"],
     deps = [
         "//wadl:go_default_library",
@@ -31,6 +33,15 @@ go_library(
         "@com_github_gorilla_mux//:go_default_library",
     ],
 )
+
+go_test(
+    name = "go_default_test",
+    srcs = ["get_api_test.go"],
+    embed = [":go_default_library"],
+    data = glob(["test/**"]),
+    deps = ["@com_github_stretchr_testify//assert:go_default_library"],
+)
+
 
 go_binary(
     name = "apellicon",
