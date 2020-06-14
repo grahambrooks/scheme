@@ -1,4 +1,4 @@
-module apellicon/service
+module github.com/grahambrooks/apellicon
 
 go 1.14
 

@@ -5,6 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -65,5 +66,29 @@ func TestReadingJson(t *testing.T) {
 		assert.True(t, len(model.Description) > 0)
 
 		assert.Equal(t, 3, len(model.Resources))
+	})
+
+	t.Run("Unrecognized API YAML specification", func(t *testing.T) {
+		parser := Parser{}
+		_, err := parser.ParseYaml(strings.NewReader(`openapi: 4
+`))
+		assert.Contains(t, err.Error(), "unrecognized API version")
+	})
+
+	t.Run("Unrecognized API JSON specification", func(t *testing.T) {
+		parser := Parser{}
+		_, err := parser.ParseJson(strings.NewReader(`{"swagger": "4"}`))
+		assert.Contains(t, err.Error(), "unrecognized API version")
+	})
+
+	t.Run("Invalid yaml", func(t *testing.T) {
+		parser := Parser{}
+		_, err := parser.ParseYaml(strings.NewReader(`Some invalid yaml`))
+		assert.Error(t, err)
+	})
+	t.Run("Invalid JSON", func(t *testing.T) {
+		parser := Parser{}
+		_, err := parser.ParseJson(strings.NewReader(`Some invalid yaml`))
+		assert.Error(t, err)
 	})
 }

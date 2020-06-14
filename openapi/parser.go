@@ -34,7 +34,6 @@ func (parser *Parser) ParseJson(reader io.Reader) (search.Model, error) {
 				model.Description = description.(string)
 			}
 			model.Version = info.(map[string]interface{})["version"].(string)
-
 		}
 
 		model.Resources = parseResources(spec)
@@ -73,7 +72,6 @@ func (parser *Parser) ParseYaml(reader io.Reader) (search.Model, error) {
 		model.Title = spec.Info.Title
 		model.Description = spec.Info.Description
 		model.Version = spec.Info.Version
-		fmt.Printf("Found %d paths", len(spec.Paths))
 
 		for key, _ := range spec.Paths {
 			model.Resources = append(model.Resources, search.Resource{Path: key})
@@ -83,8 +81,6 @@ func (parser *Parser) ParseYaml(reader io.Reader) (search.Model, error) {
 		model.Title = spec.Info.Title
 		model.Description = spec.Info.Description
 		model.Version = spec.Info.Version
-
-		fmt.Printf("Found %d paths", len(spec.Paths))
 
 		for key, _ := range spec.Paths {
 			model.Resources = append(model.Resources, search.Resource{Path: key})
