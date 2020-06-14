@@ -7,7 +7,7 @@ Apellicon is an API registry and search engine. It provides a basic search UI fo
 * OpenAPI 2/3 JSON and YAML formats
 * WADL XML interface definitions
 
-== In a hurry
+== In a hurry?
 
 If you have docker installed just run:
 
@@ -19,17 +19,12 @@ This will build apillicon:latest, download an elastic search container and if ev
 
     http://localhost:8000
 
-== Adding data
+== Adding some example API Schemas
 
     sh scripts/upload.sh
 
-....
 
-include::scripts/upload.sh[]
-
-....
-
-Uploads some example API specs.
+Uploads some example API specifications.
 
 == Development
 
