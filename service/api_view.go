@@ -26,21 +26,44 @@ func (v ApiView) ViewHandler(writer http.ResponseWriter, request *http.Request) 
 
 	res, err := v.ApiStore.Get(id)
 
-	api, err := v.decodeApiSpec(res.Source.Content)
+	if err != nil {
+		v.ErrorView(writer, fmt.Sprintf("Requested ID '%s' not found: %v", id, err))
+	} else {
+		api, err := v.decodeApiSpec(res.Source.Content)
 
-	templateFilePath := filepath.Join(v.Path, "templates", "view.html")
-	t, err := template.New("view").ParseFiles(templateFilePath)
+		if err != nil {
+			v.ErrorView(writer, fmt.Sprintf("Unable to decode '%s' specification %v", id, err))
+		} else {
+			templateFilePath := filepath.Join(v.Path, "templates", "view.html")
+			t, err := template.New("view").ParseFiles(templateFilePath)
+
+			if err != nil {
+				v.ErrorView(writer, fmt.Sprintf("error reading template file %s %v", templateFilePath, err))
+			}
+			v.Title = "some sort of title"
+			v.Id = id
+			v.Api = api
+			err = t.Execute(writer, v)
+			if err != nil {
+				fmt.Printf("Error rendering tempalte %v", err)
+			}
+		}
+	}
+}
+
+func (v ApiView) ErrorView(writer http.ResponseWriter, message string) {
+	templateFilePath := filepath.Join(v.Path, "templates", "error.html")
+	t, err := template.New("error").ParseFiles(templateFilePath)
 
 	if err != nil {
 		log.Printf("error reading template file %s %v", templateFilePath, err)
 	}
-	v.Title = "some sort of title"
-	v.Id = id
-	v.Api = api
-	err = t.Execute(writer, v)
+
+	err = t.Execute(writer, ErrorMessage{Message: message})
 	if err != nil {
-		fmt.Printf("Error rendering tempalte %v", err)
+		fmt.Printf("Error rendering error tempalte %v", err)
 	}
+
 }
 
 func (v ApiView) decodeApiSpec(spec string) (interface{}, error) {

@@ -1,0 +1,42 @@
+{{define "error"}}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Scheme Error</title>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+    </head>
+    <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Scheme</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="user-guide.html">User Guide</a>
+                    </li>
+                </ul>
+            </div>
+            <span class="navbar-text">Error</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-3">Error</h1>
+            <div class="alert alert-dismissible alert-danger">
+                <strong>Oh snap!</strong> {{.Message}}
+            </div>
+        </div>
+    </div>
+    <script src="/js/jquery-3.5.0.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js" type="application/javascript"></script>
+    </body>
+    </html>
+{{end}}

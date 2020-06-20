@@ -73,7 +73,7 @@ func (parser *Parser) ParseYaml(reader io.Reader) (search.Model, error) {
 		model.Description = spec.Info.Description
 		model.Version = spec.Info.Version
 
-		for key, _ := range spec.Paths {
+		for key := range spec.Paths {
 			model.Resources = append(model.Resources, search.Resource{Path: key})
 		}
 	case strings.HasPrefix(spec.OpenAPI, "3"):
@@ -82,7 +82,7 @@ func (parser *Parser) ParseYaml(reader io.Reader) (search.Model, error) {
 		model.Description = spec.Info.Description
 		model.Version = spec.Info.Version
 
-		for key, _ := range spec.Paths {
+		for key := range spec.Paths {
 			model.Resources = append(model.Resources, search.Resource{Path: key})
 		}
 
@@ -98,7 +98,7 @@ func parseResources(spec map[string]interface{}) []search.Resource {
 	if spec["paths"] != nil {
 		paths := spec["paths"].(map[string]interface{})
 
-		for key, _ := range paths {
+		for key := range paths {
 			resources = append(resources, search.Resource{Path: key})
 		}
 	}

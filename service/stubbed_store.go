@@ -15,7 +15,7 @@ func (s *StubApiStore) Get(id string) (ElasticGetResponse, error) {
 	return s.GetResponse, s.ErrorResponse
 }
 
-func (s *StubApiStore) TextSearch(filter string) (*esapi.Response, error) {
+func (s *StubApiStore) TextSearch(_ string) (*esapi.Response, error) {
 	panic("implement me")
 }
 
@@ -30,6 +30,6 @@ func (s *StubApiStore) Save(id string, content string) (*esapi.Response, error) 
 	return nil, s.ErrorResponse
 }
 
-func (s *StubApiStore) IndexDocument(id string, content []byte) (*esapi.Response, error) {
+func (s *StubApiStore) IndexDocument(_ string, _ []byte) (*esapi.Response, error) {
 	return s.PutResponse, s.ErrorResponse
 }
