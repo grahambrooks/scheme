@@ -11,12 +11,12 @@ import (
 	"time"
 )
 
-type ApelliconServer struct {
+type SchemeServer struct {
 	Port     int
 	ApiStore ApiStore
 }
 
-func (s *ApelliconServer) ListenAndServe() {
+func (s *SchemeServer) ListenAndServe() {
 	log.SetFormatter(&log.JSONFormatter{})
 	r := mux.NewRouter()
 	r.Use(loggingMiddleware)
@@ -48,7 +48,7 @@ func (s *ApelliconServer) ListenAndServe() {
 
 }
 
-func (s *ApelliconServer) ContentPath() string {
+func (s *SchemeServer) ContentPath() string {
 	contentPath := "site"
 	_, err := os.Stat(contentPath)
 	if err != nil {
@@ -66,15 +66,15 @@ func loggingMiddleware(next http.Handler) http.Handler {
 
 func mirrorResponse(res *esapi.Response, err error, writer http.ResponseWriter) {
 	if err != nil {
-		log.Fatalf("Error getting response: %s", err)
+		errorResponse(writer, "No connection to Elastic service")
+	} else {
+		decoder := json.NewDecoder(res.Body)
+		var body interface{}
+		_ = decoder.Decode(&body)
+
+		encoder := json.NewEncoder(writer)
+		_ = encoder.Encode(body)
+
+		_ = res.Body.Close()
 	}
-
-	decoder := json.NewDecoder(res.Body)
-	var body interface{}
-	_ = decoder.Decode(&body)
-
-	encoder := json.NewEncoder(writer)
-	_ = encoder.Encode(body)
-
-	_ = res.Body.Close()
 }

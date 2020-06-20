@@ -1,4 +1,4 @@
-module github.com/grahambrooks/apellicon
+module github.com/grahambrooks/scheme
 
 go 1.14
 

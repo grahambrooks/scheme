@@ -20,7 +20,7 @@ type ApiRegistration struct {
 	Request ApiRegistrationRequest `json:"request"`
 }
 
-func (s *ApelliconServer) NewRegistration(writer http.ResponseWriter, request *http.Request) {
+func (s *SchemeServer) NewRegistration(writer http.ResponseWriter, request *http.Request) {
 	decoder := json.NewDecoder(request.Body)
 	var registration ApiRegistration
 	err := decoder.Decode(&registration)

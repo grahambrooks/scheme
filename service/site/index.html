@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="apelliconApp">
+<html lang="en" ng-app="SchemeApp">
 <head>
     <meta charset="UTF-8">
-    <title>Apellicon API Portal</title>
+    <title>Scheme API Portal</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <script src="js/angular.js"></script>
 </head>
@@ -10,7 +10,7 @@
 
 <div class="container" ng-controller="SearchController">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Apellicon</a>
+        <a class="navbar-brand" href="/">Scheme</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -18,9 +18,6 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="user-guide.html">User Guide</a>
                 </li>
@@ -29,12 +26,17 @@
         <span class="navbar-text">API Search</span>
     </nav>
 
+    <div class="alert alert-danger" role="alert" ng-if="errorResponse">
+        {{errorResponse.Message}}
+    </div>
+
     <form>
         <div class="form-group">
             <label for="search-box">Search APIs</label>
             <input id="search-box" type="text" class="form-control" ng-model="searchText" ng-change="updateResults()">
         </div>
     </form>
+
     <p>Matching APIs {{resultCount}}</p>
     <div ng-repeat="h in searchResponse.hits.hits">
         <div class="float-right">
@@ -47,6 +49,6 @@
 
 <script src="js/jquery-3.5.0.min.js"></script>
 <script src="js/bootstrap.bundle.min.js" type="application/javascript"></script>
-<script src="js/appelicon.js"></script>
+<script src="js/scheme.js"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 package openapi
 
 import (
-	"github.com/grahambrooks/apellicon/search"
+	"github.com/grahambrooks/scheme/search"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"

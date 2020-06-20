@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (s *ApelliconServer) GetApiHandler(writer http.ResponseWriter, request *http.Request) {
+func (s *SchemeServer) GetApiHandler(writer http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 	id := vars["id"]
 	if len(id) == 0 {

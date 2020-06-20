@@ -4,16 +4,16 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/grahambrooks/apellicon/openapi"
-	"github.com/grahambrooks/apellicon/search"
-	"github.com/grahambrooks/apellicon/wadl"
+	"github.com/grahambrooks/scheme/openapi"
+	"github.com/grahambrooks/scheme/search"
+	"github.com/grahambrooks/scheme/wadl"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-func (s *ApelliconServer) NewApiHandler(writer http.ResponseWriter, request *http.Request) {
+func (s *SchemeServer) NewApiHandler(writer http.ResponseWriter, request *http.Request) {
 	contentType := request.Header.Get("Content-Type")
 
 	vars := mux.Vars(request)

@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	SearchIndexName   = "apellicon-search"
-	DocumentIndexName = "apellicon-docs"
+	SearchIndexName   = "scheme-search"
+	DocumentIndexName = "scheme-docs"
 )
 
 type ElasticApiStore struct {
@@ -98,7 +98,7 @@ func (store *ElasticApiStore) Save(id string, content string) (*esapi.Response, 
 	return req.Do(context.Background(), es)
 }
 
-func (store*ElasticApiStore) IndexDocument(id string, content []byte) (*esapi.Response, error) {
+func (store *ElasticApiStore) IndexDocument(id string, content []byte) (*esapi.Response, error) {
 	es, err := elasticsearch.NewDefaultClient()
 	if err != nil {
 		return nil, err

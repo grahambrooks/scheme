@@ -1,6 +1,6 @@
 .idea/
 bazel-bin
-bazel-apellicon
+bazel-scheme
 bazel-out
 bazel-testlogs
 .ijwb/

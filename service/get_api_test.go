@@ -12,7 +12,7 @@ import (
 
 func TestAPIHandingAPIs(t *testing.T) {
 	stubbedStore := StubApiStore{}
-	server := ApelliconServer{Port: 8000, ApiStore: &stubbedStore}
+	server := SchemeServer{Port: 8000, ApiStore: &stubbedStore}
 	t.Run("Missing API id in request", func(t *testing.T) {
 		assert.HTTPError(t, server.GetApiHandler, http.MethodGet, "/apis", nil, `{"Message":"Invalid document id (missing)"}`)
 		assert.HTTPBodyContains(t, server.GetApiHandler, http.MethodGet, "/apis", nil, `{"Message":"Invalid document id (missing)"}`)
@@ -72,7 +72,7 @@ func TestAPIHandingAPIs(t *testing.T) {
 
 func TestAPIRegistration(t *testing.T) {
 	stubbedStore := StubApiStore{}
-	server := ApelliconServer{Port: 8000, ApiStore: &stubbedStore}
+	server := SchemeServer{Port: 8000, ApiStore: &stubbedStore}
 
 	t.Run("Register API with no request body", func(t *testing.T) {
 		request := TestRequest{

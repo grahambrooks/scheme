@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func (s *ApelliconServer) HomeHandler(writer http.ResponseWriter, _ *http.Request) {
+func (s *SchemeServer) HomeHandler(writer http.ResponseWriter, _ *http.Request) {
 
 	es, err := elasticsearch.NewDefaultClient()
 	if err != nil {

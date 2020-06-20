@@ -3,7 +3,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "go_default_library",
     srcs = ["model.go"],
-    importpath = "github.com/grahambrooks/apellicon/search",
+    importpath = "github.com/grahambrooks/scheme/search",
     visibility = ["//visibility:public"],
 )
 

@@ -1,7 +1,7 @@
 version: "3.3"
 services:
-  apellicon:
-    image: apellicon:latest
+  scheme:
+    image: scheme:latest
     ports:
       - 8000:8000
   elastic:

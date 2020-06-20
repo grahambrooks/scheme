@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/grahambrooks/apellicon/search"
+	"github.com/grahambrooks/scheme/search"
 	"gopkg.in/yaml.v2"
 	"io"
 	"io/ioutil"

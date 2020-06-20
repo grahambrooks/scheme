@@ -1,8 +1,6 @@
-= Apellicon
+= Scheme
 
-Apellicon is named after a famous greek book collector from 1st Century BC.
-
-Apellicon is an API registry and search engine. It provides a basic search UI for API discovery and an api for uploading API specifications.
+Scheme is an API registry and search engine. It provides a basic search UI for API discovery and an api for uploading API specifications.
 
 * OpenAPI 2/3 JSON and YAML formats
 * WADL XML interface definitions
@@ -11,11 +9,11 @@ Apellicon is an API registry and search engine. It provides a basic search UI fo
 
 If you have docker installed just run:
 
-    docker build --tag apellicon -f docker/Dockerfile .
+    docker build --tag scheme -f docker/Dockerfile .
 
     docker-compose docker/docker-componse up
 
-This will build apillicon:latest, download an elastic search container and if everything works as planned you can open the app in your browser:
+This will build scheme:latest, download an elastic search container and if everything works as planned you can open the app in your browser:
 
     http://localhost:8000
 
@@ -38,7 +36,7 @@ Running all tests::
 
 Building and Running::
 
-    bazel run //service:apellicon
+    bazel run //service:scheme
 
 You will need a running elastic search instance
 
@@ -48,7 +46,7 @@ or
 
     docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.6.2
 
-If you have a local elastic search instance running  the ELASTICSEARCH_URL environment variable overrides the default localhost setting in the apellicon service.
+If you have a local elastic search instance running  the ELASTICSEARCH_URL environment variable overrides the default localhost setting in the scheme service.
 
     EXPORT ELASTICSEARCH_URL=http://<host>:<port>
 

@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (s *ApelliconServer) SearchApiHandler(writer http.ResponseWriter, request *http.Request) {
+func (s *SchemeServer) SearchApiHandler(writer http.ResponseWriter, request *http.Request) {
 	filter := request.FormValue("query")
 
 	if len(filter) > 0 {

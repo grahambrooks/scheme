@@ -2,7 +2,7 @@ package wadl
 
 import (
 	"encoding/xml"
-	"github.com/grahambrooks/apellicon/search"
+	"github.com/grahambrooks/scheme/search"
 	"io"
 	"io/ioutil"
 	"path"
