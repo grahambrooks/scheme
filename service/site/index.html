@@ -6,10 +6,9 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <script src="js/angular.js"></script>
 </head>
-<body class="bg-light">
-
-<div class="container" ng-controller="SearchController">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
         <a class="navbar-brand" href="/">Scheme</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +23,10 @@
             </ul>
         </div>
         <span class="navbar-text">API Search</span>
-    </nav>
+    </div>
+</nav>
+
+<div class="container" ng-controller="SearchController">
 
     <div class="alert alert-danger" role="alert" ng-if="errorResponse">
         {{errorResponse.Message}}
@@ -37,12 +39,14 @@
         </div>
     </form>
 
-    <p>Matching APIs {{resultCount}}</p>
+    <p class="text-warning">Matching {{resultCount}} APIs </p>
     <div ng-repeat="h in searchResponse.hits.hits">
         <div class="float-right">
-            <small>{{h._source.host}}{{h._source.basePath}} </small><img src="images/openapi.png" height="20"><small>{{h._source.kind}}&nbsp;<a href="/view.html?id={{h._id}}">{{h._id}}</a>&nbsp;<a href="/view/{{h._id}}">View</a></small>
+            <a href="/view/{{h._id}}"><span class="badge badge-primary">{{h._id}}</span></a>
+            <a href="/view.html?id={{h._id}}"><span class="badge badge-primary">Raw View</span></a>
+            <small>{{h._source.host}}{{h._source.basePath}} {{h._source.kind}}&nbsp;</small>
         </div>
-        <h3>{{h._source.title}} <small>v {{h._source.version}}</small></h3>
+        <h3 class="text-info">{{h._source.title}} <small>v {{h._source.version}}</small></h3>
         <p>{{h._source.description}}</p>
     </div>
 </div>

@@ -8,6 +8,24 @@
         <link rel="stylesheet" href="/css/font-awesome.min.css">
     </head>
     <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Scheme</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="user-guide.html">User Guide</a>
+                    </li>
+                </ul>
+            </div>
+            <span class="navbar-text">{{.Api.info.title}} <small>{{.Api.info.version}}</small></span>
+        </div>
+    </nav>
 
     <div class="container">
         <div class="panel panel-default">
@@ -40,15 +58,15 @@
 
         {{range $k, $v := .Api.paths}}
             <div class="panel panel-default">
-                <div class="panel-heading"><h3>{{$k}}</h3></div>
+                <div class="panel-heading text-info"><h3>{{$k}}</h3></div>
                 <div class="panel-body">
                     <dl class="row">
                         {{range $m, $v := $v}}
-                            <dt class="col-sm-3">Summary</dt>
+                            <dt class="col-sm-3 text-warning">Summary</dt>
                             <dd class="col-sm-9">{{$v.summary}}</dd>
-                            <dt class="col-sm-3">Description</dt>
+                            <dt class="col-sm-3 text-warning">Description</dt>
                             <dd class="col-sm-9">{{$v.description}}</dd>
-                            <dt class="col-sm-3">Tags</dt>
+                            <dt class="col-sm-3 text-warning">Tags</dt>
                             <dd class="col-sm-9">
                                 <ul class="list-inline">
                                     {{range $t := $v.tags}}
@@ -57,13 +75,13 @@
                                     {{end}}
                                 </ul>
                             </dd>
-                            <dt class="col-sm-3">Parameters</dt>
+                            <dt class="col-sm-3 text-warning">Parameters</dt>
                             <dd class="col-sm-9">
                                 {{range $p := $v.parameters}}
                                     {{template "parameter" .}}
                                 {{end}}
                             </dd>
-                            <dt class="col-sm-3">Responses</dt>
+                            <dt class="col-sm-3 text-warning">Responses</dt>
                             <dd class="col-sm-9">
                                 {{range $k, $v := $v.responses}}
                                     <dl class="row">
@@ -83,11 +101,11 @@
 
             {{range $k, $v := .Api.definitions}}
                 <div class="panel panel-default">
-                    <div class="panel-heading"><h3>{{$k}}</h3></div>
+                    <div class="panel-heading"><h3 class="text-info">{{$k}}</h3></div>
                     <div class="panel-body">
                         <dl class="row">
                             {{range $k, $p := $v}}
-                                <dt class="col-sm-3">{{$k}}</dt>
+                                <dt class="col-sm-3 text-warning">{{$k}}</dt>
                                 <dd class="col-sm-9">{{template "property" $p}}</dd>
                             {{end}}
                         </dl>
@@ -105,15 +123,15 @@
                     <div class="panel-body">
                         <dl class="row">
                             {{range $k, $p := $v.properties}}
-                                <dt class="col-sm-3">{{$k}}</dt>
+                                <dt class="col-sm-3 text-warning">{{$k}}</dt>
                                 <dd class="col-sm-9">{{$p.type}}
                                     {{if $p.items}}
                                         <dl class="row">
-                                            <dd class="col-sm-3">{{$p.items.type}}</dd>
+                                            <dd class="col-sm-3 text-warning">{{$p.items.type}}</dd>
                                             <dd class="col-sm-9">
                                                 <dl class="row">
                                                     {{range $k, $v := $p.items.properties}}
-                                                        <dd class="col-sm-3">{{$k}}</dd>
+                                                        <dd class="col-sm-3 text-warning">{{$k}}</dd>
                                                         <dd class="col-sm-1">{{$v.type}}</dd>
                                                         <dd class="col-sm-1">{{$v.format}}</dd>
                                                         <dd class="col-sm-7">{{$v.description}}</dd>
@@ -140,32 +158,32 @@
 
 {{define "parameter"}}
     <dl class="row">
-        <dt class="col-sm-3 text-truncate">Name</dt>
+        <dt class="col-sm-3 text-truncate text-warning">Name</dt>
         <dd class="col-sm-9">{{.name}}</dd>
 
-        <dt class="col-sm-3 text-truncate">In</dt>
+        <dt class="col-sm-3 text-truncate text-warning">In</dt>
         <dd class="col-sm-9">{{.in}}</dd>
 
-        <dt class="col-sm-3 text-truncate">Description</dt>
+        <dt class="col-sm-3 text-truncate text-warning">Description</dt>
         <dd class="col-sm-9">{{.description}}</dd>
 
-        <dt class="col-sm-3 text-truncate">Required</dt>
+        <dt class="col-sm-3 text-truncate text-warning">Required</dt>
         <dd class="col-sm-9">{{.required}}</dd>
 
-        <dt class="col-sm-3 text-truncate">Type</dt>
+        <dt class="col-sm-3 text-truncate text-warning">Type</dt>
         <dd class="col-sm-9">{{.type}}</dd>
 
-        <dt class="col-sm-3 text-truncate">Format</dt>
+        <dt class="col-sm-3 text-truncate text-warning">Format</dt>
         <dd class="col-sm-9">{{.format}}</dd>
     </dl>
 {{end}}
 
 {{define "response"}}
     <dl class="row">
-        <dt class="col-sm-3 text-truncate">Description</dt>
+        <dt class="col-sm-3 text-truncate text-warning">Description</dt>
         <dd class="col-sm-9">{{.description}}</dd>
         {{if .schema}}
-            <dt class="col-sm-3 text-truncate">Schema-ref</dt>
+            <dt class="col-sm-3 text-truncate text-warning">Schema-ref</dt>
             <dd class="col-sm-9">{{index .schema "$ref"}}</dd>
         {{end}}
     </dl>
@@ -174,11 +192,11 @@
 {{define "property"}}
     {{range $k, $v := .}}
         <dl class="row">
-            <dt class="col-sm-3 text-truncate">{{$k}}</dt>
+            <dt class="col-sm-3 text-truncate text-warning">{{$k}}</dt>
             <dd class="col-sm-9">
                 <dl class="row">
                     <dt class="col-sm-3 text-truncate">{{$v.type}} {{$v.format}}</dt>
-                    <dd class="col-sm-9">{{$v.description}} {{if $v.items}}ref {{index $v.items "$ref"}}{{end}}</dd>
+                    <dd class="col-sm-9 text-info">{{$v.description}} {{if $v.items}}ref {{index $v.items "$ref"}}{{end}}</dd>
                 </dl>
             </dd>
         </dl>
