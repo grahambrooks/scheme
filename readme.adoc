@@ -11,7 +11,7 @@ If you have docker installed just run:
 
     docker build --tag scheme -f docker/Dockerfile .
 
-    docker-compose docker/docker-componse up
+    docker-compose -f docker/docker-compose.yaml up
 
 This will build scheme:latest, download an elastic search container and if everything works as planned you can open the app in your browser:
 

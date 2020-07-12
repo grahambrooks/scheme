@@ -1,7 +1,7 @@
 package wadl
 
 import (
-	"github.com/grahambrooks/scheme/search"
+	"scheme/search"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"

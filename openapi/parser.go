@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/grahambrooks/scheme/search"
+	"scheme/search"
 	"gopkg.in/yaml.v2"
 	"io"
 	"io/ioutil"
@@ -54,6 +54,25 @@ type OpenAPISpec struct {
 	Swagger string                 `json:"swagger"`
 	Info    SpecInfo               `json:"info"`
 	Paths   map[string]interface{} `json:"paths"`
+}
+
+
+func (parser *Parser) ParseRawYaml(reader io.Reader) (interface{}, error) {
+	buffer, err := ioutil.ReadAll(reader)
+	decoder := yaml.NewDecoder(bytes.NewReader(buffer))
+	var spec map[string]interface{}
+	err = decoder.Decode(&spec)
+
+	return spec, err
+}
+
+func (parser *Parser) ParseRawJson(reader io.Reader) (interface{}, error) {
+	buffer, err := ioutil.ReadAll(reader)
+	decoder := json.NewDecoder(bytes.NewReader(buffer))
+	var spec interface{}
+	err = decoder.Decode(&spec)
+
+	return spec, err
 }
 
 func (parser *Parser) ParseYaml(reader io.Reader) (search.Model, error) {

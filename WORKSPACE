@@ -28,6 +28,19 @@ load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 gazelle_dependencies()
 
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "rules_antlr",
+    sha256 = "26e6a83c665cf6c1093b628b3a749071322f0f70305d12ede30909695ed85591",
+    strip_prefix = "rules_antlr-0.5.0",
+    urls = ["https://github.com/marcohu/rules_antlr/archive/0.5.0.tar.gz"],
+)
+
+load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
+
+rules_antlr_dependencies("4.8")
+
 go_repository(
     name = "com_github_davecgh_go_spew",
     importpath = "github.com/davecgh/go-spew",
@@ -138,4 +151,25 @@ go_repository(
     importpath = "golang.org/x/sys",
     sum = "h1:Cz4ceDQGXuKRnVBDTS23GTn/pU5OE2C0WrNTOYK1Uuc=",
     version = "v0.0.0-20190422165155-953cdadca894",
+)
+
+go_repository(
+    name = "com_github_yalp_jsonpath",
+    importpath = "github.com/yalp/jsonpath",
+    sum = "h1:6fRhSjgLCkTD3JnJxvaJ4Sj+TYblw757bqYgZaOq5ZY=",
+    version = "v0.0.0-20180802001716-5cc68e5049a0",
+)
+
+go_repository(
+    name = "com_github_paesslerag_gval",
+    importpath = "github.com/PaesslerAG/gval",
+    sum = "h1:QnCvok0w0Y3uZNxmNmC6GZ0cuBl+jH0tu/rBMT8pso4=",
+    version = "v1.0.1",
+)
+
+go_repository(
+    name = "com_github_paesslerag_jsonpath",
+    importpath = "github.com/PaesslerAG/jsonpath",
+    sum = "h1:c1/AToHQMVsduPAa4Vh6xp2U0evy4t8SWp8imEsylIk=",
+    version = "v0.1.1",
 )

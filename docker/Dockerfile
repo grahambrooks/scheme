@@ -6,7 +6,7 @@ ENV BUILD_DIR=/scheme/build
 COPY . ${BUILD_DIR}
 
 RUN bazel test //...
-RUN bazel build
+RUN bazel build //...
 RUN ls bazel-bin/service/linux_amd64_stripped
 RUN cp bazel-bin/service/linux_amd64_stripped/scheme .
 

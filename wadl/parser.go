@@ -2,10 +2,10 @@ package wadl
 
 import (
 	"encoding/xml"
-	"github.com/grahambrooks/scheme/search"
 	"io"
 	"io/ioutil"
 	"path"
+	"scheme/search"
 )
 
 type Parser struct {

@@ -1,7 +1,7 @@
 package openapi
 
 import (
-	"github.com/grahambrooks/scheme/search"
+	"scheme/search"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
