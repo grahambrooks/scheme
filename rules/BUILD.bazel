@@ -1,0 +1,33 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix scheme/rules
+gazelle(name = "gazelle")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "rules.go",
+    ],
+    importpath = "scheme/rules",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@in_gopkg_yaml_v2//:go_default_library",
+        "@com_github_paesslerag_jsonpath//:go_default_library"],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = [
+        "rules_test.go",
+        "type_test.go"
+        ],
+    data = glob(["testdata/**"]),
+    embed = [":go_default_library"],
+    deps = [
+        "//openapi:go_default_library",
+        "//search:go_default_library",
+        "@com_github_paesslerag_jsonpath//:go_default_library",
+        "@com_github_stretchr_testify//assert:go_default_library",
+    ],
+)
