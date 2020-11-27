@@ -1,10 +1,10 @@
 package rules
 
 import (
-	"github.com/PaesslerAG/jsonpath"
-	"scheme/openapi"
-	"scheme/search"
+	"github.com/grahambrooks/scheme/openapi"
+	"github.com/grahambrooks/scheme/search"
 	"github.com/stretchr/testify/assert"
+	"github.com/yalp/jsonpath"
 	"os"
 	"testing"
 )
@@ -137,23 +137,23 @@ func TestRules(t *testing.T) {
 		assert.NoError(t, err)
 		assert.NotNil(t, model)
 
-		paths, err := jsonpath.Get("$.paths.*", model)
+		paths, err := jsonpath.Read(model, "$.paths.*")
 		assert.NoError(t, err)
 		assert.NotNil(t, paths)
 
-		paths, err = jsonpath.Get("$.paths", model)
+		paths, err = jsonpath.Read(model, "$.paths")
 		assert.NoError(t, err)
 		assert.NotNil(t, paths)
 
-		paths, err = jsonpath.Get("$", model)
+		paths, err = jsonpath.Read(model, "$")
 		assert.NoError(t, err)
 		assert.NotNil(t, paths)
 
-		paths, err = jsonpath.Get("$[\"host\"]", model)
+		paths, err = jsonpath.Read(model, "$[\"host\"]")
 		assert.NoError(t, err)
 		assert.Equal(t, "api.uber.com", paths.(string))
 
-		paths, err = jsonpath.Get("$..responses.*", model)
+		paths, err = jsonpath.Read(model, "$..responses.*")
 		assert.NoError(t, err)
 		assert.NotNil(t, paths)
 	})
@@ -164,23 +164,23 @@ func TestRules(t *testing.T) {
 		assert.NoError(t, err)
 		assert.NotNil(t, model)
 
-		paths, err := jsonpath.Get("$.paths.*", model)
+		paths, err := jsonpath.Read(model, "$.paths.*")
 		assert.NoError(t, err)
 		assert.NotNil(t, paths)
 
-		paths, err = jsonpath.Get("$.paths", model)
+		paths, err = jsonpath.Read(model, "$.paths")
 		assert.NoError(t, err)
 		assert.NotNil(t, paths)
 
-		paths, err = jsonpath.Get("$", model)
+		paths, err = jsonpath.Read(model, "$")
 		assert.NoError(t, err)
 		assert.NotNil(t, paths)
 
-		paths, err = jsonpath.Get("$.host", model)
+		paths, err = jsonpath.Read(model, "$.host")
 		assert.NoError(t, err)
 		assert.NotNil(t, paths)
 
-		paths, err = jsonpath.Get("$..responses.*", model)
+		paths, err = jsonpath.Read(model, "$..responses.*")
 		assert.NoError(t, err)
 		assert.NotNil(t, paths)
 	})

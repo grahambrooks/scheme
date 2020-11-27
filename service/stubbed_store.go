@@ -1,6 +1,6 @@
 package main
 
-import "github.com/elastic/go-elasticsearch/esapi"
+import "github.com/elastic/go-elasticsearch/v7/esapi"
 
 type StubApiStore struct {
 	GetResponse    ElasticGetResponse

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"scheme/search"
+	"github.com/grahambrooks/scheme/search"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"strings"

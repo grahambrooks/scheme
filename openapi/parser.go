@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"scheme/search"
-	"gopkg.in/yaml.v2"
+	"github.com/grahambrooks/scheme/search"
+	"gopkg.in/yaml.v3"
 	"io"
 	"io/ioutil"
 	"strings"
@@ -55,7 +55,6 @@ type OpenAPISpec struct {
 	Info    SpecInfo               `json:"info"`
 	Paths   map[string]interface{} `json:"paths"`
 }
-
 
 func (parser *Parser) ParseRawYaml(reader io.Reader) (interface{}, error) {
 	buffer, err := ioutil.ReadAll(reader)

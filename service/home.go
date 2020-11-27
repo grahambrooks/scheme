@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/elastic/go-elasticsearch"
+	"github.com/elastic/go-elasticsearch/v7"
 	"log"
 	"net/http"
 )

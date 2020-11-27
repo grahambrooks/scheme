@@ -3,11 +3,11 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 go_library(
     name = "go_default_library",
     srcs = ["parser.go"],
-    importpath = "scheme/openapi",
+    importpath = "github.com/grahambrooks/scheme/openapi",
     visibility = ["//visibility:public"],
     deps = [
         "//search:go_default_library",
-        "@in_gopkg_yaml_v2//:go_default_library",
+        "@in_gopkg_yaml_v3//:go_default_library",
     ],
 )
 
@@ -17,6 +17,7 @@ go_test(
     data = glob(["test/**"]),
     embed = [":go_default_library"],
     deps = [
+        "//search:go_default_library",
         "@com_github_stretchr_testify//assert:go_default_library",
     ],
 )

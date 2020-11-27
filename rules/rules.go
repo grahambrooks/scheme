@@ -1,7 +1,7 @@
 package rules
 
 import (
-	"github.com/PaesslerAG/jsonpath"
+	"github.com/yalp/jsonpath"
 	"reflect"
 	"strings"
 )
@@ -22,7 +22,7 @@ func CompileRule(spec RuleSpec) Rule {
 	return Rule{
 		Description: spec.Description,
 		Test: func(o interface{}) bool {
-			paths, err := jsonpath.Get(spec.Path, o)
+			paths, err := jsonpath.Read(o, spec.Path)
 
 			if err != nil {
 				return false

@@ -3,48 +3,11 @@ package rules
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/stretchr/testify/assert"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 	"reflect"
 	"strings"
 	"testing"
 )
-
-
-func NormalizeStructure(from interface{}) map[string]interface{} {
-	result := make(map[string]interface{})
-	//t := reflect.TypeOf(from).
-	//
-	//switch {
-	//case t.Implements(map[interface{}]interface{}):
-	//}
-	//
-	//
-	//kt := t.Key()
-	//t.
-	//
-	//kind := t.Kind()
-
-	return result
-}
-
-func TestNormalization(t *testing.T) {
-	t.Run("Nil", func(t *testing.T) {
-		normalized := NormalizeStructure(nil)
-
-		assert.Len(t, normalized, 0)
-	})
-
-	t.Run("map[interface{}]interface{} normalization", func(t *testing.T) {
-		from := make(map[interface{}]interface{})
-		from["key"] = 1
-
-		//normalized := NormalizeStructure(from)
-		//
-		//assert.Len(t, normalized, 1)
-	})
-
-}
 
 func TestStructuredTraversal(t *testing.T) {
 	t.Run("Empty JSON", func(t *testing.T) {
@@ -83,11 +46,11 @@ func TestStructuredTraversal(t *testing.T) {
 
 		fmt.Println(tj)
 
-		for key := range j.(map[interface{}]interface{}) {
+		for key := range j.(map[string]interface{}) {
 			fmt.Println("YAML Key type", reflect.TypeOf(key))
 			switch reflect.TypeOf(key).Kind() {
 			case reflect.String:
-				fmt.Println("Key value", j.(map[interface{}]interface{})[key.(string)])
+				fmt.Println("Key value", j.(map[string]interface{})[key])
 			}
 		}
 	})
