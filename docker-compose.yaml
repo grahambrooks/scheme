@@ -1,0 +1,32 @@
+version: "3.3"
+services:
+  scheme:
+    build: .
+    ports:
+      - 8000:8000
+    networks:
+      - scheme-elastic
+    environment:
+      ELASTICSEARCH_URL: http://scheme-elastic:9200
+  scheme-elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    container_name: scheme-elastic
+    environment:
+      discovery.type: single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticdata:/usr/share/elasticsearch/data
+    networks:
+      - scheme-elastic
+
+
+volumes:
+  elasticdata:
+    driver: local
+
+networks:
+  scheme-elastic:
+    driver: bridge
