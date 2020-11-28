@@ -2,18 +2,16 @@
 
 Scheme is an API registry and search engine. It provides a basic search UI for API discovery and an api for uploading API specifications.
 
-* OpenAPI 2/3 JSON and YAML formats
-* WADL XML interface definitions
+* OpenAPI 2/3 JSON and YAML formats.
+* WADL XML interface definitions.
 
 == In a hurry?
 
-If you have docker installed just run:
+If you have docker installed just run the following in the root of the repository:
 
-    docker build --tag scheme -f docker/Dockerfile .
+    docker-compose up
 
-    docker-compose -f docker/docker-compose.yaml up
-
-This will build scheme:latest, download an elastic search container and if everything works as planned you can open the app in your browser:
+This will build scheme, download an elastic search container and if everything works as planned you can open the app in your browser:
 
     http://localhost:8000
 
@@ -21,14 +19,19 @@ This will build scheme:latest, download an elastic search container and if every
 
     sh scripts/upload.sh
 
-
 Uploads some example API specifications.
 
 == Development
 
 Managing and updating dependencies::
++
+Updating build and run dependencies is a little more complex. First update the go.mod dependencies:
 
-     bazel run //:gazelle -- update-repos -from_file=go.mod
+    go get -d -u ./...
++
+Then update the dependencies for the bazel based build:
+
+    bazel run //:gazelle -- update-repos -from_file=go.mod -to_macro=deps.bzl%go_dependencies
 
 Running all tests::
 
@@ -38,7 +41,7 @@ Building and Running::
 
     bazel run //service:scheme
 
-You will need a running elastic search instance
+You will need a running elastic search instance as a backing store for the API schema
 
     sh ./scripts/es-start.sh
 
@@ -50,3 +53,6 @@ If you have a local elastic search instance running  the ELASTICSEARCH_URL envir
 
     EXPORT ELASTICSEARCH_URL=http://<host>:<port>
 
+Running bazel in a container:
+
+     docker run -it --entrypoint=/bin/bash -v `pwd`:/src/workspace -w /src/workspace l.gcr.io/google/bazel:latest
