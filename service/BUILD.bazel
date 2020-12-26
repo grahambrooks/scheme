@@ -5,7 +5,7 @@ load("@bazel_gazelle//:def.bzl", "gazelle")
 gazelle(name = "gazelle")
 
 go_library(
-    name = "go_default_library",
+    name = "service_lib",
     srcs = [
         "api.go",
         "api_store.go",
@@ -27,37 +27,37 @@ go_library(
     importpath = "github.com/grahambrooks/scheme/service",
     visibility = ["//visibility:private"],
     deps = [
-        "//openapi:go_default_library",
-        "//search:go_default_library",
-        "//wadl:go_default_library",
-        "@com_github_elastic_go_elasticsearch_v7//:go_default_library",
-        "@com_github_elastic_go_elasticsearch_v7//esapi:go_default_library",
-        "@com_github_gorilla_mux//:go_default_library",
-        "@com_github_sirupsen_logrus//:go_default_library",
-        "@com_github_stretchr_testify//assert:go_default_library",
-        "@in_gopkg_yaml_v3//:go_default_library",
+        "//openapi",
+        "//search",
+        "//wadl",
+        "@com_github_elastic_go_elasticsearch_v7//:go-elasticsearch",
+        "@com_github_elastic_go_elasticsearch_v7//esapi",
+        "@com_github_gorilla_mux//:mux",
+        "@com_github_sirupsen_logrus//:logrus",
+        "@com_github_stretchr_testify//assert",
+        "@in_gopkg_yaml_v3//:yaml_v3",
     ],
 )
 
 go_test(
-    name = "go_default_test",
+    name = "service_test",
     srcs = [
         "get_api_test.go",
         "new_api_test.go",
     ],
     data = glob(["test/**"]),
-    embed = [":go_default_library"],
+    embed = [":service_lib"],
     deps = [
-        "//search:go_default_library",
-        "@com_github_elastic_go_elasticsearch_v7//esapi:go_default_library",
-        "@com_github_gorilla_mux//:go_default_library",
-        "@com_github_stretchr_testify//assert:go_default_library",
+        "//search",
+        "@com_github_elastic_go_elasticsearch_v7//esapi",
+        "@com_github_gorilla_mux//:mux",
+        "@com_github_stretchr_testify//assert",
     ],
 )
 
 go_binary(
     name = "scheme",
     data = glob(["site/**"]),
-    embed = [":go_default_library"],
+    embed = [":service_lib"],
     visibility = ["//visibility:public"],
 )

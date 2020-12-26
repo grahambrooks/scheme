@@ -9,11 +9,17 @@ Scheme is an API registry and search engine. It provides a basic search UI for A
 
 If you have docker installed just run the following in the root of the repository:
 
+First create the scheme image
+
+    docker build --tag scheme -f docker/Dockerfile .
+
+Start up the elasticsearch backend and service
+
     docker-compose up
 
 This will build scheme, download an elastic search container and if everything works as planned you can open the app in your browser:
 
-    http://localhost:8000
+http://localhost:8000
 
 == Adding some example API Schemas
 

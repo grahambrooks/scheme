@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 	"html/template"
-	"log"
 	"net/http"
 	"path/filepath"
 	"strings"
@@ -75,7 +75,7 @@ func (v ApiView) decodeApiSpec(spec string) (interface{}, error) {
 		decoder := yaml.NewDecoder(strings.NewReader(spec))
 		err = decoder.Decode(&api)
 		if err != nil {
-			log.Printf("error reading API %v", err)
+			log.Printf("error decoding API: %v", err)
 		}
 	}
 	return api, err

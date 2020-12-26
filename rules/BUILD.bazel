@@ -5,26 +5,26 @@ load("@bazel_gazelle//:def.bzl", "gazelle")
 gazelle(name = "gazelle")
 
 go_library(
-    name = "go_default_library",
+    name = "rules",
     srcs = ["rules.go"],
     importpath = "scheme/rules",
     visibility = ["//visibility:private"],
-    deps = ["@com_github_yalp_jsonpath//:go_default_library"],
+    deps = ["@com_github_yalp_jsonpath//:jsonpath"],
 )
 
 go_test(
-    name = "go_default_test",
+    name = "rules_test",
     srcs = [
         "rules_test.go",
         "type_test.go",
     ],
     data = glob(["testdata/**"]),
-    embed = [":go_default_library"],
+    embed = [":rules"],
     deps = [
-        "//openapi:go_default_library",
-        "//search:go_default_library",
-        "@com_github_stretchr_testify//assert:go_default_library",
-        "@com_github_yalp_jsonpath//:go_default_library",
-        "@in_gopkg_yaml_v3//:go_default_library",
+        "//openapi",
+        "//search",
+        "@com_github_stretchr_testify//assert",
+        "@com_github_yalp_jsonpath//:jsonpath",
+        "@in_gopkg_yaml_v3//:yaml_v3",
     ],
 )
