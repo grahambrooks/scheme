@@ -18,21 +18,15 @@ http_archive(
     ],
 )
 
-http_archive(
-    name = "rules_antlr",
-    sha256 = "26e6a83c665cf6c1093b628b3a749071322f0f70305d12ede30909695ed85591",
-    strip_prefix = "rules_antlr-0.5.0",
-    urls = ["https://github.com/marcohu/rules_antlr/archive/0.5.0.tar.gz"],
-)
-
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
-load("//:deps.bzl", "go_dependencies")
-load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
 go_rules_dependencies()
+
 go_register_toolchains(version = "1.15.5")
-rules_antlr_dependencies("4.8")
+
 # gazelle:repository_macro deps.bzl%go_dependencies
 gazelle_dependencies()
+
+load("//:deps.bzl", "go_dependencies")
 go_dependencies()

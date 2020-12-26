@@ -1,4 +1,4 @@
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 load("@bazel_gazelle//:def.bzl", "gazelle")
 
 # gazelle:prefix github.com/grahambrooks/scheme/service
@@ -6,52 +6,12 @@ gazelle(name = "gazelle")
 
 go_library(
     name = "service_lib",
-    srcs = [
-        "api.go",
-        "api_store.go",
-        "api_view.go",
-        "doc_service.go",
-        "error_response.go",
-        "get_api.go",
-        "home.go",
-        "list_apis.go",
-        "main.go",
-        "new_api.go",
-        "registrations.go",
-        "search.go",
-        "server.go",
-        "service_stats.go",
-        "stubbed_store.go",
-        "test_helpers.go",
-    ],
+    srcs = ["main.go"],
     importpath = "github.com/grahambrooks/scheme/service",
     visibility = ["//visibility:private"],
     deps = [
-        "//openapi",
-        "//search",
-        "//wadl",
-        "@com_github_elastic_go_elasticsearch_v7//:go-elasticsearch",
-        "@com_github_elastic_go_elasticsearch_v7//esapi",
-        "@com_github_gorilla_mux//:mux",
-        "@com_github_sirupsen_logrus//:logrus",
-        "@com_github_stretchr_testify//assert",
-        "@in_gopkg_yaml_v3//:yaml_v3",
-    ],
-)
-
-go_test(
-    name = "service_test",
-    srcs = [
-        "get_api_test.go",
-        "new_api_test.go",
-    ],
-    data = glob(["test/**"]),
-    embed = [":service_lib"],
-    deps = [
-        "//search",
-        "@com_github_elastic_go_elasticsearch_v7//esapi",
-        "@com_github_gorilla_mux//:mux",
-        "@com_github_stretchr_testify//assert",
+        "//service/server",
+        "//service/store",
     ],
 )
 

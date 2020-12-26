@@ -3,4 +3,5 @@ bazel-bin
 bazel-scheme
 bazel-out
 bazel-testlogs
+bazel-workspace
 .ijwb/

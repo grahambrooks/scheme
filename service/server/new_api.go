@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"bytes"
@@ -9,7 +9,6 @@ import (
 	"github.com/grahambrooks/scheme/wadl"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -34,7 +33,7 @@ func (s *SchemeServer) NewApiHandler(writer http.ResponseWriter, request *http.R
 			if err != nil {
 				errorResponse(writer, fmt.Sprintf("Failed to encode model %v", err))
 			} else {
-				log.Printf("Search Model %s", buffer.String())
+				s.Log("Search Model %s", buffer.String())
 
 				res, err := s.ApiStore.IndexDocument(id, buffer.Bytes())
 				mirrorResponse(res, err, writer)
@@ -45,13 +44,13 @@ func (s *SchemeServer) NewApiHandler(writer http.ResponseWriter, request *http.R
 
 func parseContent(contentType string, spec io.ReadCloser) (search.Model, error) {
 	switch contentType {
-	case "application/openapi+json":
+	case ApplicationOpenApiJson:
 		parser := openapi.Parser{}
 		return parser.ParseJson(spec)
-	case "application/openapi+yaml":
+	case ApplicationOpenApiYaml:
 		parser := openapi.Parser{}
 		return parser.ParseYaml(spec)
-	case "application/wadl+xml":
+	case ApplicationWadlXml:
 		parser := wadl.Parser{}
 		return parser.Parse(spec)
 	case "":

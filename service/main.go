@@ -1,14 +1,17 @@
 package main
 
-import "flag"
+import (
+	"flag"
+	"github.com/grahambrooks/scheme/service/server"
+	"github.com/grahambrooks/scheme/service/store"
+)
 
 func main() {
-	port := 8000
+	var port int
 	flag.IntVar(&port, "port", 8000, "sets the server port value")
-
 	flag.Parse()
 
-	server := SchemeServer{Port: port, ApiStore: NewApiStore()}
+	scheme := server.SchemeServer{Port: port, ApiStore: store.NewApiStore()}
 
-	server.ListenAndServe()
+	scheme.ListenAndServe()
 }

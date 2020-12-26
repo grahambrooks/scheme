@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"github.com/grahambrooks/scheme/search"
@@ -11,7 +11,7 @@ import (
 func TestParsingByContentType(t *testing.T) {
 	t.Run("JSON", func(t *testing.T) {
 		content := `{ "swagger": "2.0"}`
-		model, err := parseContent("application/openapi+json", ioutil.NopCloser(strings.NewReader(content)))
+		model, err := parseContent(ApplicationOpenApiJson, ioutil.NopCloser(strings.NewReader(content)))
 		assert.NoError(t, err)
 		assert.Equal(t, search.OpenAPI2, model.Kind)
 	})
@@ -75,7 +75,7 @@ func TestParsingByContentType(t *testing.T) {
         </resource>
     </resources>
 </application>`
-		model, err := parseContent("application/wadl+xml", ioutil.NopCloser(strings.NewReader(content)))
+		model, err := parseContent(ApplicationWadlXml, ioutil.NopCloser(strings.NewReader(content)))
 		assert.NoError(t, err)
 		assert.Equal(t, search.WADL, model.Kind)
 	})

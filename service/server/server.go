@@ -1,9 +1,10 @@
-package main
+package server
 
 import (
 	"encoding/json"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
 	"github.com/gorilla/mux"
+	"github.com/grahambrooks/scheme/service/store"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 	"os"
@@ -13,7 +14,11 @@ import (
 
 type SchemeServer struct {
 	Port     int
-	ApiStore ApiStore
+	ApiStore store.ApiStore
+}
+
+func (s* SchemeServer) Log(format string, args...interface{}) {
+	log.Printf(format, args...)
 }
 
 func (s *SchemeServer) ListenAndServe() {
@@ -34,7 +39,7 @@ func (s *SchemeServer) ListenAndServe() {
 	view := ApiView{Path: s.ContentPath(), ApiStore: s.ApiStore}
 
 	r.Path("/view/{id}").HandlerFunc(view.ViewHandler).Methods(http.MethodGet)
-	log.Printf("Serving static content from %s", s.ContentPath())
+	s.Log("Serving static content from %s", s.ContentPath())
 	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir(s.ContentPath()))))
 
 	srv := &http.Server{
@@ -43,7 +48,7 @@ func (s *SchemeServer) ListenAndServe() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-	log.Printf("Service running on port 8000")
+	s.Log("Service starting on port %d", s.Port)
 	log.Fatal(srv.ListenAndServe())
 
 }

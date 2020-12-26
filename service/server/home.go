@@ -1,9 +1,8 @@
-package main
+package server
 
 import (
 	"encoding/json"
 	"github.com/elastic/go-elasticsearch/v7"
-	"log"
 	"net/http"
 )
 
@@ -11,12 +10,12 @@ func (s *SchemeServer) HomeHandler(writer http.ResponseWriter, _ *http.Request) 
 
 	es, err := elasticsearch.NewDefaultClient()
 	if err != nil {
-		log.Fatalf("Error creating the client: %s", err)
+		s.Log("Error creating the client: %s", err)
 	}
 
 	res, err := es.Info()
 	if err != nil {
-		log.Fatalf("Error getting response: %s", err)
+		s.Log("Error getting response: %s", err)
 	}
 
 	decoder := json.NewDecoder(res.Body)

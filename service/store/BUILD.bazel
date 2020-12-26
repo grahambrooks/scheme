@@ -1,0 +1,17 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "store",
+    srcs = [
+        "api.go",
+        "api_store.go",
+        "doc_service.go",
+        "stubbed_store.go",
+    ],
+    importpath = "github.com/grahambrooks/scheme/service/store",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_elastic_go_elasticsearch_v7//:go-elasticsearch",
+        "@com_github_elastic_go_elasticsearch_v7//esapi",
+    ],
+)

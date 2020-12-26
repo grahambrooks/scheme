@@ -1,9 +1,10 @@
-package main
+package server
 
 import (
 	"fmt"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
 	"github.com/gorilla/mux"
+	"github.com/grahambrooks/scheme/service/store"
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestAPIHandingAPIs(t *testing.T) {
-	stubbedStore := StubApiStore{}
+	stubbedStore := store.StubApiStore{}
 	server := SchemeServer{Port: 8000, ApiStore: &stubbedStore}
 	t.Run("Missing API id in request", func(t *testing.T) {
 		assert.HTTPError(t, server.GetApiHandler, http.MethodGet, "/apis", nil, `{"Message":"Invalid document id (missing)"}`)
@@ -62,7 +63,7 @@ func TestAPIHandingAPIs(t *testing.T) {
 		request := TestRequest{
 			Method:  http.MethodPost,
 			Url:     "/apis/123",
-			Headers: map[string]string{"Content-Type": "application/openapi+json"},
+			Headers: map[string]string{"Content-Type": ApplicationOpenApiJson},
 			Body:    `{ "swagger": "2.0" }`,
 		}
 		RouteHTTPBodyContains(t, "/apis/{id}", server.NewApiHandler, request, http.StatusOK, `{"response":"test"}`)
@@ -71,14 +72,14 @@ func TestAPIHandingAPIs(t *testing.T) {
 }
 
 func TestAPIRegistration(t *testing.T) {
-	stubbedStore := StubApiStore{}
+	stubbedStore := store.StubApiStore{}
 	server := SchemeServer{Port: 8000, ApiStore: &stubbedStore}
 
 	t.Run("Register API with no request body", func(t *testing.T) {
 		request := TestRequest{
 			Method:  http.MethodPost,
 			Url:     "/registrations",
-			Headers: map[string]string{"Content-Type": "application/openapi+json"},
+			Headers: map[string]string{"Content-Type": ApplicationOpenApiJson},
 			Body:    `{}`,
 		}
 		RouteHTTPBodyContains(t, "/registrations", server.NewRegistration, request, http.StatusBadRequest, `"ID missing in registration request"`)
@@ -88,7 +89,7 @@ func TestAPIRegistration(t *testing.T) {
 		request := TestRequest{
 			Method:  http.MethodPost,
 			Url:     "/registrations",
-			Headers: map[string]string{"Content-Type": "application/openapi+json"},
+			Headers: map[string]string{"Content-Type": ApplicationOpenApiJson},
 			Body:    `{ "id": "api:id" }`,
 		}
 		RouteHTTPBodyContains(t, "/registrations", server.NewRegistration, request, http.StatusBadRequest, `"URL missing in registration request"`)
@@ -98,7 +99,7 @@ func TestAPIRegistration(t *testing.T) {
 		request := TestRequest{
 			Method:  http.MethodPost,
 			Url:     "/registrations",
-			Headers: map[string]string{"Content-Type": "application/openapi+json"},
+			Headers: map[string]string{"Content-Type": ApplicationOpenApiJson},
 			Body: `{
   "id": "api:id",
   "url": "http://some/url"

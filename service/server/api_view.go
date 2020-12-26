@@ -1,9 +1,10 @@
-package main
+package server
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/grahambrooks/scheme/service/store"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 	"html/template"
@@ -17,7 +18,7 @@ type ApiView struct {
 	Id       string
 	Title    string
 	Api      interface{}
-	ApiStore ApiStore
+	ApiStore store.ApiStore
 }
 
 func (v ApiView) ViewHandler(writer http.ResponseWriter, request *http.Request) {

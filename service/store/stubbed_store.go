@@ -1,4 +1,4 @@
-package main
+package store
 
 import "github.com/elastic/go-elasticsearch/v7/esapi"
 

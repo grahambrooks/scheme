@@ -1,0 +1,49 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "server",
+    srcs = [
+        "api_view.go",
+        "content_types.go",
+        "error_response.go",
+        "get_api.go",
+        "home.go",
+        "list_apis.go",
+        "new_api.go",
+        "registrations.go",
+        "search.go",
+        "server.go",
+        "service_stats.go",
+        "test_helpers.go",
+    ],
+    importpath = "github.com/grahambrooks/scheme/service/server",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//openapi",
+        "//search",
+        "//service/store",
+        "//wadl",
+        "@com_github_elastic_go_elasticsearch_v7//:go-elasticsearch",
+        "@com_github_elastic_go_elasticsearch_v7//esapi",
+        "@com_github_gorilla_mux//:mux",
+        "@com_github_sirupsen_logrus//:logrus",
+        "@com_github_stretchr_testify//assert",
+        "@in_gopkg_yaml_v3//:yaml_v3",
+    ],
+)
+
+go_test(
+    name = "server_test",
+    srcs = [
+        "get_api_test.go",
+        "new_api_test.go",
+    ],
+    embed = [":server"],
+    deps = [
+        "//search",
+        "//service/store",
+        "@com_github_elastic_go_elasticsearch_v7//esapi",
+        "@com_github_gorilla_mux//:mux",
+        "@com_github_stretchr_testify//assert",
+    ],
+)
