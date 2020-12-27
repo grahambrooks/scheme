@@ -8,6 +8,7 @@ go_library(
         "error_response.go",
         "get_api.go",
         "home.go",
+        "info.go",
         "list_apis.go",
         "new_api.go",
         "registrations.go",

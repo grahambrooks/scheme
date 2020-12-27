@@ -11,7 +11,7 @@ func main() {
 	flag.IntVar(&port, "port", 8000, "sets the server port value")
 	flag.Parse()
 
-	scheme := server.SchemeServer{Port: port, ApiStore: store.NewApiStore()}
+	scheme := server.NewSchemeServer(port, store.NewApiStore())
 
 	scheme.ListenAndServe()
 }

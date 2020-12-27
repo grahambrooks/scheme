@@ -13,21 +13,22 @@ import (
 )
 
 type SchemeServer struct {
+	Server   *http.Server
+	Router   *mux.Router
 	Port     int
 	ApiStore store.ApiStore
 }
 
-func (s* SchemeServer) Log(format string, args...interface{}) {
-	log.Printf(format, args...)
-}
-
-func (s *SchemeServer) ListenAndServe() {
+func NewSchemeServer(port int, apiStore store.ApiStore) *SchemeServer {
 	log.SetFormatter(&log.JSONFormatter{})
+	s := SchemeServer{Port: port, ApiStore: apiStore}
 	r := mux.NewRouter()
+	s.Router = r
 	r.Use(loggingMiddleware)
 	api := r.PathPrefix("/api").Subrouter()
 
 	api.HandleFunc("/", s.HomeHandler)
+	api.HandleFunc("/info", s.InfoHandler).Methods(http.MethodGet)
 	api.HandleFunc("/stats", s.ServiceStats)
 	api.HandleFunc("/search", s.SearchApiHandler).Methods(http.MethodGet)
 	api.HandleFunc("/apis", s.ListApisHandler).Methods(http.MethodGet)
@@ -36,24 +37,33 @@ func (s *SchemeServer) ListenAndServe() {
 	api.HandleFunc("/apis/{id}/updates", s.GetApiHandler).Methods(http.MethodPost)
 	api.HandleFunc("/registrations", s.NewRegistration).Methods(http.MethodPost)
 
-	view := ApiView{Path: s.ContentPath(), ApiStore: s.ApiStore}
+	contentPath := ContentPath()
+	view := ApiView{Path: contentPath, ApiStore: s.ApiStore}
 
 	r.Path("/view/{id}").HandlerFunc(view.ViewHandler).Methods(http.MethodGet)
-	s.Log("Serving static content from %s", s.ContentPath())
-	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir(s.ContentPath()))))
+	s.Log("Serving static content from %s", contentPath)
+	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir(contentPath))))
 
-	srv := &http.Server{
+	s.Server = &http.Server{
 		Handler:      r,
 		Addr:         ":" + strconv.Itoa(s.Port),
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-	s.Log("Service starting on port %d", s.Port)
-	log.Fatal(srv.ListenAndServe())
 
+	return &s
 }
 
-func (s *SchemeServer) ContentPath() string {
+func (s *SchemeServer) Log(format string, args ...interface{}) {
+	log.Printf(format, args...)
+}
+
+func (s *SchemeServer) ListenAndServe() {
+	s.Log("Service starting on port %d", s.Port)
+	log.Fatal(s.Server.ListenAndServe())
+}
+
+func ContentPath() string {
 	contentPath := "site"
 	_, err := os.Stat(contentPath)
 	if err != nil {
