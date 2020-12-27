@@ -15,7 +15,7 @@ type PathInfo struct {
 }
 
 func (s *SchemeServer) InfoHandler(writer http.ResponseWriter, _ *http.Request) {
-	var pathinfo []*PathInfo
+	var pathInfo []*PathInfo
 
 	_ = s.Router.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
 		pi := PathInfo{}
@@ -39,11 +39,11 @@ func (s *SchemeServer) InfoHandler(writer http.ResponseWriter, _ *http.Request) 
 		if err == nil {
 			pi.Methods = methods
 		}
-		pathinfo = append(pathinfo, &pi)
+		pathInfo = append(pathInfo, &pi)
 		return nil
 	})
 
 	encoder := json.NewEncoder(writer)
-	_ = encoder.Encode(pathinfo)
+	_ = encoder.Encode(pathInfo)
 
 }
