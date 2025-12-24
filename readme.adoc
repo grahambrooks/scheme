@@ -11,7 +11,7 @@ If you have docker installed just run the following in the root of the repositor
 
 First create the scheme image
 
-    docker build --tag scheme -f docker/Dockerfile .
+    docker build --tag scheme .
 
 Start up the elasticsearch backend and service
 
@@ -31,13 +31,10 @@ Uploads some example API specifications.
 
 Managing and updating dependencies::
 +
-Updating build and run dependencies is a little more complex. First update the go.mod dependencies:
+Update Go dependencies using rules_go:
 
-    go get -d -u ./...
-+
-Then update the dependencies for the bazel based build:
-
-    bazel run //:gazelle -- update-repos -from_file=go.mod -to_macro=deps.bzl%go_dependencies
+    bazel run @rules_go//go -- get -u ./...
+    bazel run @rules_go//go -- mod tidy
 
 Running all tests::
 
