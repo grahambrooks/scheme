@@ -9,7 +9,7 @@ services:
     environment:
       ELASTICSEARCH_URL: http://scheme-elastic:9200
   scheme-elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.29
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.5.0
     container_name: scheme-elastic
     environment:
       discovery.type: single-node
