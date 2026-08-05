@@ -1,9 +1,10 @@
 module github.com/grahambrooks/scheme
 
-go 1.24.0
+go 1.25
 
 require (
 	github.com/elastic/go-elasticsearch/v7 v7.17.10
+	github.com/elastic/go-elasticsearch/v9 v9.5.0
 	github.com/gorilla/mux v1.8.1
 	github.com/sirupsen/logrus v1.9.4
 	github.com/stretchr/testify v1.11.1
